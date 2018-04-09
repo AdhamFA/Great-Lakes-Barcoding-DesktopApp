@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Tickets Total:" />
+            <Region layoutX="79.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+            <Label layoutX="10.0" layoutY="10.0" text="Customers Being Serviced:" />
+            <Region layoutX="79.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+            <Label layoutX="239.0" layoutY="10.0" text="Connection Status: " />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Service Tickets">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Inprogress" />
+                        <MenuItem mnemonicParsing="false" text="Finished" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Reports">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Tickets" />
+                        <MenuItem mnemonicParsing="false" text="Invoices" />
+                        <MenuItem mnemonicParsing="false" text="Employees" />
+                        <MenuItem mnemonicParsing="false" text="Customers" />
+                        <MenuItem mnemonicParsing="false" text="Contracts" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox spacing="3.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Create New Ticket" />
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Edit Current Ticket">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Button>
+                  <Button layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Remove Ticket" />
+                  <Region HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding></Region>
+                  <Button fx:id="btnLogout" layoutX="114.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Logout" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="8.0" right="8.0" top="2.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TableView BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+   </center>
+   <left>
+      <TreeView BorderPane.alignment="CENTER" />
+   </left>
+</BorderPane>

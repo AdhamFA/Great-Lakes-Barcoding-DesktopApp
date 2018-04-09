@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane fx:id="loginPane" style="-fx-background-color: #5975a0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+   <center>
+      <ImageView pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="file:/C:/Users/adham/IdeaProjects/GLB-MS/res/glblogo.png" />
+         </image>
+      </ImageView>
+   </center>
+   <bottom>
+      <HBox spacing="4.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Username:" />
+            <TextField />
+            <Label text="Password:" />
+            <PasswordField />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleButtonAction" text="Login" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+      </HBox>
+   </bottom>
+   <top>
+      <FlowPane alignment="CENTER" style="-fx-background-color: #2b4775;" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" text="Great Lakes Barcoding - 2018" textAlignment="CENTER" textFill="#ffbf00" />
+         </children>
+      </FlowPane>
+   </top>
+</BorderPane>
