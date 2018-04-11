@@ -3,9 +3,13 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -16,26 +20,31 @@ public class LoginController {
     @FXML
     private Button btnLogin;
     @FXML
-    private Button btnLogout;
-
+    private TextField txtUN;
     @FXML
+    private PasswordField txtPW;
+    @FXML
+    private Label lblError;
+
+
+
+    @FXML //this method will change the scene when the button is clicked and the requirements are met
     private void handleButtonAction(ActionEvent event) throws IOException{
-        Stage stage;
-        Parent root;
-        if(event.getSource()==btnLogin){
-            //get reference to the button's stage
-            stage=(Stage) btnLogin.getScene().getWindow();
-            //load up OTHER FXML document
-            root = FXMLLoader.load(getClass().getResource("manager.fxml"));
+        Parent managerView = FXMLLoader.load(getClass().getResource("manager.fxml"));
+        Scene managerViewScene = new Scene(managerView);
+        String error;
+
+        if(txtUN.getText().isEmpty() || txtPW.getText().isEmpty()){
+            error = "PLEASE ENTER USERNAME AND PASSWORD";
+            lblError.setText(error);
         }
-        else{
-            stage=(Stage) btnLogout.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        else {
+                //this will get the stage information
+            Stage window;
+            window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(managerViewScene);
+            window.show();
         }
-        //create a new scene with root and set the stage
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
 }

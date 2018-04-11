@@ -20,22 +20,34 @@
       </ImageView>
    </center>
    <bottom>
-      <HBox spacing="4.0" BorderPane.alignment="CENTER">
+      <VBox>
          <children>
-            <Label text="Username:" />
-            <TextField />
-            <Label text="Password:" />
-            <PasswordField />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleButtonAction" text="Login" />
+            <Label fx:id="lblError" textFill="RED">
+               <VBox.margin>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </VBox.margin>
+            </Label>
+            <HBox spacing="4.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Username:" />
+                  <TextField fx:id="txtUN" />
+                  <Label text="Password:" />
+                  <PasswordField fx:id="txtPW" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleButtonAction" text="Login" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+            </HBox>
          </children>
          <BorderPane.margin>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
          </BorderPane.margin>
-         <padding>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </padding>
-      </HBox>
+      </VBox>
    </bottom>
    <top>
       <FlowPane alignment="CENTER" style="-fx-background-color: #2b4775;" BorderPane.alignment="CENTER">
