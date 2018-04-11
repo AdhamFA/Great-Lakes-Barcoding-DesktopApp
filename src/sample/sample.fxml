@@ -15,7 +15,7 @@
    <center>
       <ImageView pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="file:/C:/Users/adham/IdeaProjects/GLB-MS/res/glblogo.png" />
+            <Image url="glblogo.png" />
          </image>
       </ImageView>
    </center>
