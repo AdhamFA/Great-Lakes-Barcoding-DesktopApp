@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -14,8 +17,6 @@
             <Label text="Tickets Total:" />
             <Region layoutX="79.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
             <Label layoutX="10.0" layoutY="10.0" text="Customers Being Serviced:" />
-            <Region layoutX="79.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-            <Label layoutX="239.0" layoutY="10.0" text="Connection Status: " />
          </children>
          <BorderPane.margin>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -27,28 +28,28 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="Service Tickets">
+                <Menu fx:id="menu_ST" mnemonicParsing="false" text="Service Tickets">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Inprogress" />
-                        <MenuItem mnemonicParsing="false" text="Finished" />
+                    <MenuItem fx:id="mst_New" mnemonicParsing="false" text="New" />
+                        <MenuItem fx:id="mst_Inprogress" mnemonicParsing="false" text="Inprogress" />
+                        <MenuItem fx:id="mst_Finished" mnemonicParsing="false" text="Finished" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Reports">
+                <Menu fx:id="menu_Reports" mnemonicParsing="false" text="Reports">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Tickets" />
-                        <MenuItem mnemonicParsing="false" text="Invoices" />
-                        <MenuItem mnemonicParsing="false" text="Employees" />
-                        <MenuItem mnemonicParsing="false" text="Customers" />
-                        <MenuItem mnemonicParsing="false" text="Contracts" />
+                    <MenuItem fx:id="rprt_Tickets" mnemonicParsing="false" text="Tickets" />
+                        <MenuItem fx:id="rprt_Invoices" mnemonicParsing="false" text="Invoices" />
+                        <MenuItem fx:id="rprt_Employees" mnemonicParsing="false" text="Employees" />
+                        <MenuItem fx:id="rprt_Customers" mnemonicParsing="false" text="Customers" />
+                        <MenuItem fx:id="rprt_Contracts" mnemonicParsing="false" text="Contracts" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Record Mileage" />
-                        <MenuItem mnemonicParsing="false" text="Record Hours" />
+                        <MenuItem fx:id="rcrd_Mileage" mnemonicParsing="false" text="Record Mileage" />
+                        <MenuItem fx:id="rcrd_Hours" mnemonicParsing="false" text="Record Hours" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu fx:id="menu_Help" mnemonicParsing="false" text="Help">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="help_About" mnemonicParsing="false" text="About" />
                   </items>
                 </Menu>
               </menus>
@@ -80,14 +81,39 @@
       </VBox>
    </top>
    <center>
+      <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="lblWelcome" text="Welcome back, " textFill="#141668">
+               <font>
+                  <Font name="AR JULIAN" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="276.0" fitWidth="331.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="warning.png" />
+               </image>
+            </ImageView>
+         </children>
+      </FlowPane>
+   </center>
+   <right>
       <TableView BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn prefWidth="75.0" text="Tickets in-progress" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-   </center>
+   </right>
    <left>
-      <TreeView BorderPane.alignment="CENTER" />
+      <TableView BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="75.0" text="New Service Tickets" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
    </left>
 </BorderPane>

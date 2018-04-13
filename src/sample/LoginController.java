@@ -20,6 +20,8 @@ public class LoginController {
     @FXML
     private Button btnLogin;
     @FXML
+    private Button btnClose;
+    @FXML
     private TextField txtUN;
     @FXML
     private PasswordField txtPW;
@@ -27,19 +29,30 @@ public class LoginController {
     private Label lblError;
 
 
+    @FXML
+    private void close(){
+        Stage stage = (Stage) btnClose.getScene().getWindow();
+
+        stage.close();
+    }
 
     @FXML //this method will change the scene when the button is clicked and the requirements are met
     private void handleButtonAction(ActionEvent event) throws IOException{
-        Parent managerView = FXMLLoader.load(getClass().getResource("manager.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("manager.fxml"));
+        loader.load();
+        Parent managerView = loader.getRoot();
         Scene managerViewScene = new Scene(managerView);
-        String error;
+        String error, userName = txtUN.getText().toString();
 
         if(txtUN.getText().isEmpty() || txtPW.getText().isEmpty()){
             error = "PLEASE ENTER USERNAME AND PASSWORD";
             lblError.setText(error);
         }
         else {
-                //this will get the stage information
+            //this will get the stage information
+            ManagerController controller = loader.getController();
+            controller.setText(userName);
             Stage window;
             window = (Stage) ((Node)event.getSource()).getScene().getWindow();
             window.setScene(managerViewScene);
