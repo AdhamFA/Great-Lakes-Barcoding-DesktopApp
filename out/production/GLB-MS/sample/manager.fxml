@@ -90,7 +90,7 @@
             </Label>
             <ImageView fitHeight="276.0" fitWidth="331.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="warning.png" />
+                  <Image url="glblogo.png" />
                </image>
             </ImageView>
          </children>

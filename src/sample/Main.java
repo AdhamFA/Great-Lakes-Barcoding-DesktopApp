@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
@@ -18,6 +19,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("GLB");
         primaryStage.setScene(new Scene(root, 500, 360));
+        primaryStage.setResizable(false);
+       // primaryStage.initStyle(StageStyle.UNDECORATED);
 
         primaryStage.show();
     }

@@ -11,7 +11,7 @@
    <right>
       <VBox spacing="8.0" BorderPane.alignment="CENTER">
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="View" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
             <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancel" />
             <Region layoutX="10.0" layoutY="35.0" VBox.vgrow="ALWAYS" />
           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Close" />
