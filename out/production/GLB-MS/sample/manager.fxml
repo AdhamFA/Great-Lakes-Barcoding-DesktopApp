@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManagerController">
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManagerController">
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
@@ -30,7 +30,7 @@
               <menus>
                 <Menu fx:id="menu_ST" mnemonicParsing="false" text="Service Tickets">
                   <items>
-                    <MenuItem fx:id="mst_New" mnemonicParsing="false" text="New" />
+                    <MenuItem fx:id="mst_New" mnemonicParsing="false" text="New Service Tickets" />
                         <MenuItem fx:id="mst_Inprogress" mnemonicParsing="false" text="Inprogress" />
                         <MenuItem fx:id="mst_Finished" mnemonicParsing="false" text="Finished" />
                   </items>
@@ -40,7 +40,7 @@
                     <MenuItem fx:id="rprt_Tickets" mnemonicParsing="false" text="Tickets" />
                         <MenuItem fx:id="rprt_Invoices" mnemonicParsing="false" text="Invoices" />
                         <MenuItem fx:id="rprt_Employees" mnemonicParsing="false" text="Employees" />
-                        <MenuItem fx:id="rprt_Customers" mnemonicParsing="false" text="Customers" />
+                        <MenuItem fx:id="rprt_Customers" mnemonicParsing="false" onAction="#rprtCustomersOnAction" text="Customers" />
                         <MenuItem fx:id="rprt_Contracts" mnemonicParsing="false" text="Contracts" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="rcrd_Mileage" mnemonicParsing="false" text="Record Mileage" />
@@ -68,7 +68,7 @@
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding></Region>
-                  <Button fx:id="btnLogout" layoutX="114.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Logout" />
+                  <Button fx:id="btnLogout" layoutX="114.0" layoutY="10.0" mnemonicParsing="false" onAction="#logoutButtonAction" text="Logout" />
                </children>
                <VBox.margin>
                   <Insets bottom="2.0" left="8.0" right="8.0" top="2.0" />

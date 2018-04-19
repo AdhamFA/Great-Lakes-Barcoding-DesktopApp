@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ManagerController {
+
+    @FXML
+    private Parent root;
     @FXML
     private Button btnLogout;
     @FXML
@@ -28,7 +31,7 @@ public class ManagerController {
     }
 
     @FXML //this method will change the scene when the button is clicked and the requirements are met
-    private void handleButtonAction(ActionEvent event) throws IOException {
+    private void logoutButtonAction(ActionEvent event) throws IOException {
         Parent loginView = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Scene loginViewScene = new Scene(loginView);
 
@@ -38,4 +41,27 @@ public class ManagerController {
         window.setScene(loginViewScene);
         window.show();
     }
+
+    @FXML
+    private void rprtCustomersOnAction(ActionEvent event) throws IOException {
+        Parent reportView = FXMLLoader.load(getClass().getResource("report.fxml"));//
+        Scene reportViewScene = new Scene(reportView);
+
+        Stage window;
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(reportViewScene);
+        window.show();
+    }
+
+/*    @FXML inprogress
+    private void serviceNewMIAction(ActionEvent event) throws IOException {
+        Parent serviceView = FXMLLoader.load(getClass().getResource("serviceTickets.fxml"));
+        Scene loginViewScene = new Scene(serviceView);
+
+        //this will get the stage information
+        Stage window;
+        window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(loginViewScene);
+        window.show();
+    }*/
 }

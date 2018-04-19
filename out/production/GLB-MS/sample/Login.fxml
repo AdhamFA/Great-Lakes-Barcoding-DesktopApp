@@ -24,10 +24,10 @@
          <children>
             <HBox spacing="4.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Username:" />
+                  <Label text="Username:" textFill="#102839" />
                   <TextField fx:id="txtUN" />
                   <Region layoutX="435.0" layoutY="12.0" HBox.hgrow="ALWAYS" />
-                  <Label text="Password:" />
+                  <Label text="Password:" textFill="#102839" />
                   <PasswordField fx:id="txtPW" />
                   <Region HBox.hgrow="ALWAYS" />
                   <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleButtonAction" text="Login" />
@@ -41,7 +41,7 @@
             </HBox>
             <HBox spacing="2.0">
                <children>
-                  <Label fx:id="lblError" textFill="RED" />
+                  <Label fx:id="lblError" textFill="#102839" />
                   <Region HBox.hgrow="ALWAYS">
                      <padding>
                         <Insets right="4.0" />
@@ -57,6 +57,9 @@
          <BorderPane.margin>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
          </BorderPane.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </VBox>
    </bottom>
    <top>
