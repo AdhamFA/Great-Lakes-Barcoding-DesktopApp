@@ -19,7 +19,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("GLB");
         primaryStage.setScene(new Scene(root, 500, 360));
-        primaryStage.setResizable(false);
+       // primaryStage.setResizable(false);
        // primaryStage.initStyle(StageStyle.UNDECORATED);
 
         primaryStage.show();
