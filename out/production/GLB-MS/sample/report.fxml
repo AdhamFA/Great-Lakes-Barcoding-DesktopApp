@@ -16,7 +16,7 @@
          <children>
             <Button mnemonicParsing="false" text="Print" />
             <Region VBox.vgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="Close" />
+            <Button fx:id="close" mnemonicParsing="false" onAction="#closeScene" text="Close" />
          </children>
          <BorderPane.margin>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

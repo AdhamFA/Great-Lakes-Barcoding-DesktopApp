@@ -37,11 +37,11 @@
                 </Menu>
                 <Menu fx:id="menu_Reports" mnemonicParsing="false" text="Reports">
                   <items>
-                    <MenuItem fx:id="rprt_Tickets" mnemonicParsing="false" text="Tickets" />
-                        <MenuItem fx:id="rprt_Invoices" mnemonicParsing="false" text="Invoices" />
-                        <MenuItem fx:id="rprt_Employees" mnemonicParsing="false" text="Employees" />
-                        <MenuItem fx:id="rprt_Customers" mnemonicParsing="false" onAction="#rprtCustomersOnAction" text="Customers" />
-                        <MenuItem fx:id="rprt_Contracts" mnemonicParsing="false" text="Contracts" />
+                    <MenuItem fx:id="rprt_Tickets" mnemonicParsing="false" onAction="#rprtOnAction" text="Tickets" />
+                        <MenuItem fx:id="rprt_Invoices" mnemonicParsing="false" onAction="#rprtOnAction" text="Invoices" />
+                        <MenuItem fx:id="rprt_Employees" mnemonicParsing="false" onAction="#rprtOnAction" text="Employees" />
+                        <MenuItem fx:id="rprt_Customers" mnemonicParsing="false" onAction="#rprtOnAction" text="Customers" />
+                        <MenuItem fx:id="rprt_Contracts" mnemonicParsing="false" onAction="#rprtOnAction" text="Contracts" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="rcrd_Mileage" mnemonicParsing="false" text="Record Mileage" />
                         <MenuItem fx:id="rcrd_Hours" mnemonicParsing="false" text="Record Hours" />
