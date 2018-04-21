@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,25 +21,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class ManagerController {
+public class ManagerController implements Initializable {
 
     @FXML
     private Parent root;
     @FXML
     private Button btnLogout;
     @FXML
-    private Label lblWelcome;
+    private Label lblWelcome, ticketsCounter;
     @FXML
     private MenuItem mst_New, mst_Inprogress, mst_Finished,
                      rprt_Tickets, rprt_Invoices, rprt_Employees,
                      rprt_Customers, rprt_Products, rcrd_Mileage,
                      rcrd_Hours, help_About;
-
     @FXML
-    public void setText(String name){
-        lblWelcome.setText("Welcome back, " + name +"!");
-    }
+    private TableView newTickets, wipTickets;
 
     @FXML //this method will change the scene when the button is clicked and the requirements are met
     private void logoutButtonAction(ActionEvent event) throws IOException {
@@ -355,6 +354,58 @@ public class ManagerController {
         window = (Stage) (root.getScene().getWindow());
         window.setScene(reportViewScene);
         window.show();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            int totalT = 0;
+            ArrayList<ManagerTicket> newTList = new ArrayList<>();
+            ArrayList<ManagerTicket> wipTList = new ArrayList<>();
+            JSONArray empName = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getEmployee&empUser=jg23"));
+            JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getInvoice"));
+
+            JSONObject empNameO = empName.getJSONObject(0);
+            String fName = empNameO.getString("Emp_FirstName");
+            String lName = empNameO.getString("Emp_LastName");
+            lblWelcome.setText("Welcome back, " + fName + " " + lName);
+
+            TableColumn newTCol = new TableColumn("New Service Tickets");
+            TableColumn wipTCol = new TableColumn("Tickets In-Progress");
+
+            newTickets.getColumns().add(newTCol);
+            wipTickets.getColumns().add(wipTCol);
+
+            for (int i = 0; i < invoices.length(); i++) {
+                JSONObject invoice = invoices.getJSONObject(i);
+                if(Integer.parseInt(invoice.get("Ser_Status").toString()) == 2){
+                    String strInvId = invoice.get("Ser_InvoiceId").toString();
+                    String strCusNum = invoice.get("Cus_CustomerNumber").toString();
+                    newTList.add(new ManagerTicket(strInvId, strCusNum));
+                    totalT++;
+                }
+                else if(Integer.parseInt(invoice.get("Ser_Status").toString()) == 1){
+                    String strInvId = invoice.get("Ser_InvoiceId").toString();
+                    String strCusNum = invoice.get("Cus_CustomerNumber").toString();
+                    wipTList.add(new ManagerTicket(strInvId, strCusNum));
+                    totalT++;
+                }
+
+            }
+            ObservableList<ManagerTicket> newobList = FXCollections.observableArrayList(newTList);
+            ObservableList<ManagerTicket> wipobList = FXCollections.observableArrayList(wipTList);
+
+            newTCol.setCellValueFactory(new PropertyValueFactory<ManagerTicket, String>("customerTicketID"));
+            wipTCol.setCellValueFactory(new PropertyValueFactory<ManagerTicket, String>("customerTicketID"));
+
+            newTickets.setItems(newobList);
+            wipTickets.setItems(wipobList);
+            ticketsCounter.setText("Total Tickets: " + Integer.toString(totalT));
+        }
+        catch (IOException e){
+            System.out.println(e);
+        }
+
     }
 
 /*    @FXML inprogress

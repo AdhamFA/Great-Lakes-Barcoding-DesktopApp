@@ -93,7 +93,6 @@ public class LoginController {
             else {
             //this will get the stage information
                 ManagerController controller = loader.getController();
-                controller.setText(userName);
                 Stage window;
                 window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(managerViewScene);

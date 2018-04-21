@@ -51,8 +51,7 @@ public class reportController
         Stage window;
         window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(managerViewScene);
+
         window.show();
     }
-
-
 }

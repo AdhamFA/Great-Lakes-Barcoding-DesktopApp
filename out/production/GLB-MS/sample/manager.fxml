@@ -14,9 +14,8 @@
    <bottom>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <Label text="Tickets Total:" />
+            <Label fx:id="ticketsCounter" text="Tickets Total:" />
             <Region layoutX="79.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-            <Label layoutX="10.0" layoutY="10.0" text="Customers Being Serviced:" />
          </children>
          <BorderPane.margin>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -31,8 +30,8 @@
                 <Menu fx:id="menu_ST" mnemonicParsing="false" text="Service Tickets">
                   <items>
                     <MenuItem fx:id="mst_New" mnemonicParsing="false" text="New Service Tickets" />
-                        <MenuItem fx:id="mst_Inprogress" mnemonicParsing="false" text="Inprogress" />
-                        <MenuItem fx:id="mst_Finished" mnemonicParsing="false" text="Finished" />
+                        <MenuItem fx:id="mst_Inprogress" mnemonicParsing="false" text="In-progress Tickets" />
+                        <MenuItem fx:id="mst_Finished" mnemonicParsing="false" text="Finished Tickets" />
                   </items>
                 </Menu>
                 <Menu fx:id="menu_Reports" mnemonicParsing="false" text="Reports">
@@ -97,20 +96,14 @@
       </FlowPane>
    </center>
    <right>
-      <TableView BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn prefWidth="75.0" text="Tickets in-progress" />
-        </columns>
+      <TableView fx:id="wipTickets" BorderPane.alignment="CENTER">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
    </right>
    <left>
-      <TableView BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn prefWidth="75.0" text="New Service Tickets" />
-        </columns>
+      <TableView fx:id="newTickets" BorderPane.alignment="CENTER">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
