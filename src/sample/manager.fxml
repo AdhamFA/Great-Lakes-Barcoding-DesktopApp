@@ -41,9 +41,6 @@
                         <MenuItem fx:id="rprt_Employees" mnemonicParsing="false" onAction="#rprtOnAction" text="Employees" />
                         <MenuItem fx:id="rprt_Customers" mnemonicParsing="false" onAction="#rprtOnAction" text="Customers" />
                         <MenuItem fx:id="rprt_Products" mnemonicParsing="false" onAction="#rprtOnAction" text="Products" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="rcrd_Mileage" mnemonicParsing="false" text="Record Mileage" />
-                        <MenuItem fx:id="rcrd_Hours" mnemonicParsing="false" text="Record Hours" />
                   </items>
                 </Menu>
                 <Menu fx:id="menu_Help" mnemonicParsing="false" text="Help">
