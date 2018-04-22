@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +25,7 @@ public class ManagerController {
     @FXML
     private Parent root;
     @FXML
-    private Button btnLogout;
+    private Button btnLogout, updateTickets;
     @FXML
     private Label lblWelcome, ticketsCounter;
     @FXML
@@ -33,7 +34,7 @@ public class ManagerController {
             rprt_Customers, rprt_Products, rcrd_Mileage,
             rcrd_Hours, help_About;
     @FXML
-    private TableView newTickets, wipTickets;
+    private TableView<ManagerTicket> newTickets, wipTickets;
 
     @FXML //this method will change the scene when the button is clicked and the requirements are met
     private void logoutButtonAction(ActionEvent event) throws IOException {
@@ -428,45 +429,46 @@ public class ManagerController {
             newTickets.setItems(newobList);
             wipTickets.setItems(wipobList);
             ticketsCounter.setText("Total Tickets: " + Integer.toString(totalT));
+
+            if(wipTickets.getSelectionModel().isEmpty() && newTickets.getSelectionModel().isEmpty())
+                updateTickets.setDisable(true);
         } catch (IOException e) {
             System.out.println(e);
         }
 
     }
+
     @FXML
-    private void ticketsOnAction(ActionEvent event) throws IOException {
-        MenuItem miEvent = (MenuItem) event.getSource();
-        String mieID = miEvent.getId();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("serviceTickets.fxml"));
-        fxmlLoader.load();
-        Parent serviceView = fxmlLoader.getRoot();
-        Scene serviceViewScene = new Scene(serviceView);
-        ServiceTicketsController sc = fxmlLoader.getController();
+    public void updateTicketOnAction(ActionEvent event) throws IOException{
+        ManagerTicket mt;
+        if(!wipTickets.getSelectionModel().isEmpty()){
+            mt = wipTickets.getSelectionModel().getSelectedItem();
+        }
+        else if(!newTickets.getSelectionModel().isEmpty()) {
+            mt = wipTickets.getSelectionModel().getSelectedItem();
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("editTicket.fxml"));
+        Parent editTicketView = fxmlLoader.load();
+        Scene editTicketViewScene = new Scene(editTicketView);
         Stage window;
-        window = (Stage) (root.getScene().getWindow());
-        window.setScene(serviceViewScene);
+        EditTicketController editTicketController = fxmlLoader.getController();
+
+
+        window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(editTicketViewScene);
         window.show();
 
-        ArrayList<Tickets> newServiceTickets = new ArrayList<>();
+    }
 
-        JSONArray Invoice = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getInvoice"));
+    @FXML
+    public void onMouseClickedNew(MouseEvent event){
+            wipTickets.getSelectionModel().clearSelection();
+            updateTickets.setDisable(false);
+    }
 
-        for (int i = 0; i < Invoice.length(); i++) {
-            JSONObject invoices = Invoice.getJSONObject(i);
-            System.out.println(invoices);
-            String strCusNum = invoices.getString("Cus_CustomerNumber").toString();
-            String strInvoiceID = invoices.getString("Ser_InvoiceId").toString();
-
-
-            newServiceTickets.add(new Tickets(strCusNum, strInvoiceID));
-
-        }
-
-        //ListProperty<Tickets> lpTickets = new SimpleListProperty<>();
-        ObservableList<Tickets> tickList = FXCollections.observableArrayList(newServiceTickets);
-
-        //lpTickets.set(FXCollections.observableArrayList(newServiceTickets));
-        sc.setList((ListProperty) tickList);
-
+    @FXML
+    public void onMouseClickedWip(MouseEvent event){
+            newTickets.getSelectionModel().clearSelection();
+            updateTickets.setDisable(false);
     }
 }

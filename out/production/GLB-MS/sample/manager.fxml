@@ -27,13 +27,12 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu fx:id="menu_ST" mnemonicParsing="false" text="Service Tickets">
-                  <items>
-                    <MenuItem fx:id="mst_New" mnemonicParsing="false" onAction="#ticketsOnAction" text="New Service Tickets" />
-                        <MenuItem fx:id="mst_Inprogress" mnemonicParsing="false" onAction="#ticketsOnAction" text="In-progress Tickets" />
-                        <MenuItem fx:id="mst_Finished" mnemonicParsing="false" onAction="#ticketsOnAction" text="Finished Tickets" />
-                  </items>
-                </Menu>
+                  <Menu mnemonicParsing="false" text="Products">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Edit" />
+                    </items>
+                  </Menu>
                 <Menu fx:id="menu_Reports" mnemonicParsing="false" text="Reports">
                   <items>
                     <MenuItem fx:id="rprt_Tickets" mnemonicParsing="false" onAction="#rprtOnAction" text="Tickets" />
@@ -52,7 +51,7 @@
             </MenuBar>
             <HBox spacing="3.0">
                <children>
-                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Edit Current Ticket">
+                  <Button fx:id="updateTickets" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateTicketOnAction" text="Edit Current Ticket">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></Button>
@@ -92,14 +91,14 @@
       </FlowPane>
    </center>
    <right>
-      <TableView fx:id="wipTickets" BorderPane.alignment="CENTER">
+      <TableView fx:id="wipTickets" onMouseClicked="#onMouseClickedWip" BorderPane.alignment="CENTER">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
    </right>
    <left>
-      <TableView fx:id="newTickets" BorderPane.alignment="CENTER">
+      <TableView fx:id="newTickets" onMouseClicked="#onMouseClickedNew" BorderPane.alignment="CENTER">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
