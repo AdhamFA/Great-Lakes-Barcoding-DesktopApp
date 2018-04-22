@@ -21,7 +21,9 @@ public class Employee {
     /*constructor to load up parsed JSON data in the form of objects, before being
     loaded into the columns of the JavaFX tableview*/
 
-    public Employee(String number, String firstN, String lastN, String street, String city, String state, String zip, String phone, String hDate, String salary, String bDate, String title, String active, String username) {
+    public Employee(String number, String firstN, String lastN, String street, String city,
+                    String state, String zip, String phone, String hDate, String salary, String bDate,
+                    String title, String active, String username) {
         this.number = new SimpleStringProperty(number);
         this.firstN = new SimpleStringProperty(firstN);
         this.lastN = new SimpleStringProperty(lastN);

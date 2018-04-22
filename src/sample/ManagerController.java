@@ -1,11 +1,11 @@
 package sample;
 
+import javafx.beans.property.ListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,15 +16,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class ManagerController implements Initializable {
-
+public class ManagerController {
     @FXML
     private Parent root;
     @FXML
@@ -33,9 +29,9 @@ public class ManagerController implements Initializable {
     private Label lblWelcome, ticketsCounter;
     @FXML
     private MenuItem mst_New, mst_Inprogress, mst_Finished,
-                     rprt_Tickets, rprt_Invoices, rprt_Employees,
-                     rprt_Customers, rprt_Products, rcrd_Mileage,
-                     rcrd_Hours, help_About;
+            rprt_Tickets, rprt_Invoices, rprt_Employees,
+            rprt_Customers, rprt_Products, rcrd_Mileage,
+            rcrd_Hours, help_About;
     @FXML
     private TableView newTickets, wipTickets;
 
@@ -43,10 +39,12 @@ public class ManagerController implements Initializable {
     private void logoutButtonAction(ActionEvent event) throws IOException {
         Parent loginView = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Scene loginViewScene = new Scene(loginView);
-
+        newTickets.getItems().clear();
+        wipTickets.getItems().clear();
+        Credentials crd = new Credentials(null, null, null);
         //this will get the stage information
         Stage window;
-        window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(loginViewScene);
         window.show();
     }
@@ -62,14 +60,40 @@ public class ManagerController implements Initializable {
             char[] chars = new char[1024];
             while ((read = reader.read(chars)) != -1)
                 buffer.append(chars, 0, read);
-            if(buffer.equals(""))
+            if (buffer.equals(""))
                 buffer.append("[]");
             return buffer.toString();
-        }
-        finally {
+        } finally {
             if (reader != null)
                 reader.close();
         }
+    }
+
+    @FXML
+    private void helpOnAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("help.fxml"));
+        fxmlLoader.load();
+        Parent helpView = fxmlLoader.getRoot();
+        Scene helpViewScene = new Scene(helpView);
+        HelpController helpC = fxmlLoader.getController();
+
+        InputStream in = new FileInputStream("README.md");
+        BufferedReader bf = new BufferedReader(new InputStreamReader(in));
+
+        String help, line = bf.readLine();
+        StringBuilder sb = new StringBuilder();
+
+        while(line != null){
+            sb.append(line).append("\n");
+            line = bf.readLine();
+        }
+        help = sb.toString();
+        helpC.setTextarea(help);
+
+        Stage window;
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(helpViewScene);
+        window.show();
     }
 
     @FXML
@@ -80,54 +104,57 @@ public class ManagerController implements Initializable {
         fxmlLoader.load();
         Parent reportView = fxmlLoader.getRoot();
         Scene reportViewScene = new Scene(reportView);
-        reportController rc = fxmlLoader.getController();
+        ReportController rc = fxmlLoader.getController();
 
-        switch (mieID){
+        switch (mieID) {
 
             case "rprt_Customers":
-            ArrayList<Customer> list = new ArrayList<>();
-            JSONArray customers = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getCustomer"));
+                ArrayList<Customer> list = new ArrayList<>();
+                JSONArray customers = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                                "&password=" + Credentials.getPass() + "&request=getCustomer"));
 
-            TableColumn name = new TableColumn("Name");
-            TableColumn street = new TableColumn("Street");
-            TableColumn city = new TableColumn("City");
-            TableColumn state = new TableColumn("State");
-            TableColumn zip = new TableColumn("ZIP");
-            TableColumn id = new TableColumn("ID");
-            TableColumn email = new TableColumn("Email");
-            TableColumn phone = new TableColumn("Phone");
-            rc.setTableColumns(name, street, city, state, zip, id, email, phone);
+                TableColumn name = new TableColumn("Name");
+                TableColumn street = new TableColumn("Street");
+                TableColumn city = new TableColumn("City");
+                TableColumn state = new TableColumn("State");
+                TableColumn zip = new TableColumn("ZIP");
+                TableColumn id = new TableColumn("ID");
+                TableColumn email = new TableColumn("Email");
+                TableColumn phone = new TableColumn("Phone");
+                rc.setTableColumns(name, street, city, state, zip, id, email, phone);
 
-            for (int i = 0; i < customers.length(); i++) {
-                JSONObject customer = customers.getJSONObject(i);
-                System.out.println(customer);
-                String strName = customer.getString("Cus_Name");
-                String strStreet = customer.getString("Cus_StreetAddress");
-                String strCity = customer.getString("Cus_City");
-                String strState = customer.getString("Cus_State");
-                String strZIP = customer.getString("Cus_ZipCode");
-                String strID = customer.getString("Cus_CustomerNumber");
-                String strEmail = customer.getString("Cus_Email");
-                String strPhone = customer.getString("Cus_PhoneNumber");
-                list.add(new Customer(strName, strStreet, strCity, strState, strZIP, strPhone, strEmail, strID));
-            }
-            System.out.println(list);
-            ObservableList<Customer> obList = FXCollections.observableArrayList(list);
-            name.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
-            street.setCellValueFactory(new PropertyValueFactory<Customer, String>("street"));
-            city.setCellValueFactory(new PropertyValueFactory<Customer, String>("city"));
-            state.setCellValueFactory(new PropertyValueFactory<Customer, String>("state"));
-            zip.setCellValueFactory(new PropertyValueFactory<Customer, String>("zip"));
-            id.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
-            email.setCellValueFactory(new PropertyValueFactory<Customer, String>("email"));
-            phone.setCellValueFactory(new PropertyValueFactory<Customer, String>("phone"));
+                for (int i = 0; i < customers.length(); i++) {
+                    JSONObject customer = customers.getJSONObject(i);
+                    System.out.println(customer);
+                    String strName = customer.getString("Cus_Name");
+                    String strStreet = customer.getString("Cus_StreetAddress");
+                    String strCity = customer.getString("Cus_City");
+                    String strState = customer.getString("Cus_State");
+                    String strZIP = customer.getString("Cus_ZipCode");
+                    String strID = customer.getString("Cus_CustomerNumber");
+                    String strEmail = customer.getString("Cus_Email");
+                    String strPhone = customer.getString("Cus_PhoneNumber");
+                    list.add(new Customer(strName, strStreet, strCity, strState, strZIP,
+                            strPhone, strEmail, strID));
+                }
+                System.out.println(list);
+                ObservableList<Customer> obList = FXCollections.observableArrayList(list);
+                name.setCellValueFactory(new PropertyValueFactory<Customer, String>("name"));
+                street.setCellValueFactory(new PropertyValueFactory<Customer, String>("street"));
+                city.setCellValueFactory(new PropertyValueFactory<Customer, String>("city"));
+                state.setCellValueFactory(new PropertyValueFactory<Customer, String>("state"));
+                zip.setCellValueFactory(new PropertyValueFactory<Customer, String>("zip"));
+                id.setCellValueFactory(new PropertyValueFactory<Customer, String>("id"));
+                email.setCellValueFactory(new PropertyValueFactory<Customer, String>("email"));
+                phone.setCellValueFactory(new PropertyValueFactory<Customer, String>("phone"));
 
-            rc.setTable(obList);
-            break;
+                rc.setTable(obList);
+                break;
 
             case "rprt_Products":
                 ArrayList<Product> pList = new ArrayList<>();
-                JSONArray products = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getProduct"));
+                JSONArray products = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                        "&password=" + Credentials.getPass() + "&request=getProduct"));
                 TableColumn tcNum = new TableColumn("Number");
                 TableColumn tcNam = new TableColumn("Name");
                 TableColumn tcTyp = new TableColumn("Type");
@@ -167,7 +194,8 @@ public class ManagerController implements Initializable {
 
             case "rprt_Employees":
                 ArrayList<Employee> elist = new ArrayList<>();
-                JSONArray employees = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getEmployee"));
+                JSONArray employees = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                        "&password=" + Credentials.getPass() + "&request=getEmployee"));
 
                 TableColumn eID = new TableColumn("ID");
                 TableColumn fName = new TableColumn("First Name");
@@ -183,7 +211,8 @@ public class ManagerController implements Initializable {
                 TableColumn eTitle = new TableColumn("Title");
                 TableColumn eActive = new TableColumn("Active");
                 TableColumn eUser = new TableColumn("UserName");
-                rc.setTableColumns(eID, fName, lName, eStreet, eCity, eState, eZip, ePhone, eHire, eSalary, eBirth, eTitle, eActive, eUser);
+                rc.setTableColumns(eID, fName, lName, eStreet, eCity, eState, eZip, ePhone, eHire, eSalary,
+                        eBirth, eTitle, eActive, eUser);
 
                 for (int i = 0; i < employees.length(); i++) {
                     JSONObject employee = employees.getJSONObject(i);
@@ -202,7 +231,8 @@ public class ManagerController implements Initializable {
                     String strET = employee.getString("Emp_JobTitle");
                     String strEACT = employee.getString("Emp_Active");
                     String strEUSR = employee.getString("Emp_Username");
-                    elist.add(new Employee(strEID, strEFN, strELN, strESTRT, strECTY, strESTT, strEZIP, strEPHN, strEHRE, strESAL, strEBRTH, strET, strEACT, strEUSR));
+                    elist.add(new Employee(strEID, strEFN, strELN, strESTRT, strECTY, strESTT, strEZIP,
+                            strEPHN, strEHRE, strESAL, strEBRTH, strET, strEACT, strEUSR));
                 }
                 ObservableList<Employee> eobList = FXCollections.observableArrayList(elist);
                 eID.setCellValueFactory(new PropertyValueFactory<Customer, String>("number"));
@@ -226,7 +256,8 @@ public class ManagerController implements Initializable {
 
             case "rprt_Invoices":
                 ArrayList<Invoice> ilist = new ArrayList<>();
-                JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getInvoice"));
+                JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                        "&password=" + Credentials.getPass() + "&request=getInvoice"));
 
                 TableColumn invoiceNum = new TableColumn("Invoice Number");
                 TableColumn customer = new TableColumn("Customer");
@@ -241,7 +272,8 @@ public class ManagerController implements Initializable {
                 TableColumn parts = new TableColumn("Parts Used");
                 TableColumn techMiles = new TableColumn("Technician Mileage");
                 TableColumn balance = new TableColumn("Service Balance");
-                rc.setTableColumns(invoiceNum, customer, poNum, status, empNum, requested, completed, reason, repairTime, comments, parts, techMiles, balance);
+                rc.setTableColumns(invoiceNum, customer, poNum, status, empNum, requested, completed,
+                        reason, repairTime, comments, parts, techMiles, balance);
 
                 for (int i = 0; i < invoices.length(); i++) {
                     JSONObject invoice = invoices.getJSONObject(i);
@@ -261,7 +293,7 @@ public class ManagerController implements Initializable {
                     String strBalance = invoice.get("Ser_Balance").toString();
 
                     //if completed date is NOT NULL, display invoice
-                    if(Integer.parseInt(strStat) != 0)
+                    if (Integer.parseInt(strStat) != 0)
                         continue;
 
                     ilist.add(new Invoice(strInvId, strCusNum, strPO, strStat, strEmpNum, strReqDate, strCompDate,
@@ -289,7 +321,8 @@ public class ManagerController implements Initializable {
             //Katrina attempting to code some more
             case "rprt_Tickets":
                 ArrayList<Invoice> tlist = new ArrayList<>();
-                JSONArray tickets = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getInvoice"));
+                JSONArray tickets = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                        "&password=" + Credentials.getPass() + "&request=getInvoice"));
 
                 TableColumn ticketNum = new TableColumn("Invoice Number");
                 TableColumn tCustomer = new TableColumn("Customer");
@@ -304,7 +337,8 @@ public class ManagerController implements Initializable {
                 TableColumn tparts = new TableColumn("Parts Used");
                 TableColumn ttechMiles = new TableColumn("Technician Mileage");
                 TableColumn tbalance = new TableColumn("Service Balance");
-                rc.setTableColumns(ticketNum, tCustomer, tpoNum, tstatus, tempNum, trequested, treason, trepairTime, tcomments, tparts, ttechMiles, tbalance);
+                rc.setTableColumns(ticketNum, tCustomer, tpoNum, tstatus, tempNum, trequested,
+                        treason, trepairTime, tcomments, tparts, ttechMiles, tbalance);
 
                 for (int i = 0; i < tickets.length(); i++) {
                     JSONObject ticket = tickets.getJSONObject(i);
@@ -324,7 +358,7 @@ public class ManagerController implements Initializable {
                     String strBalance = ticket.get("Ser_Balance").toString();
 
                     //if completed date is NOT NULL, display invoice
-                    if(Integer.parseInt(strStat) == 0)
+                    if (Integer.parseInt(strStat) == 0)
                         continue;
 
                     tlist.add(new Invoice(strInvId, strCusNum, strPO, strStat, strEmpNum, strReqDate, strCompDate,
@@ -355,20 +389,14 @@ public class ManagerController implements Initializable {
         window.setScene(reportViewScene);
         window.show();
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(){
         try {
             int totalT = 0;
             ArrayList<ManagerTicket> newTList = new ArrayList<>();
             ArrayList<ManagerTicket> wipTList = new ArrayList<>();
-            JSONArray empName = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getEmployee&empUser=jg23"));
-            JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getInvoice"));
-
-            JSONObject empNameO = empName.getJSONObject(0);
-            String fName = empNameO.getString("Emp_FirstName");
-            String lName = empNameO.getString("Emp_LastName");
-            lblWelcome.setText("Welcome back, " + fName + " " + lName);
+            JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                    "&password=" + Credentials.getPass() + "&request=getInvoice"));
+            lblWelcome.setText("Welcome back, " + Credentials.getName());
 
             TableColumn newTCol = new TableColumn("New Service Tickets");
             TableColumn wipTCol = new TableColumn("Tickets In-Progress");
@@ -378,13 +406,12 @@ public class ManagerController implements Initializable {
 
             for (int i = 0; i < invoices.length(); i++) {
                 JSONObject invoice = invoices.getJSONObject(i);
-                if(Integer.parseInt(invoice.get("Ser_Status").toString()) == 2){
+                if (Integer.parseInt(invoice.get("Ser_Status").toString()) == 2) {
                     String strInvId = invoice.get("Ser_InvoiceId").toString();
                     String strCusNum = invoice.get("Cus_CustomerNumber").toString();
                     newTList.add(new ManagerTicket(strInvId, strCusNum));
                     totalT++;
-                }
-                else if(Integer.parseInt(invoice.get("Ser_Status").toString()) == 1){
+                } else if (Integer.parseInt(invoice.get("Ser_Status").toString()) == 1) {
                     String strInvId = invoice.get("Ser_InvoiceId").toString();
                     String strCusNum = invoice.get("Cus_CustomerNumber").toString();
                     wipTList.add(new ManagerTicket(strInvId, strCusNum));
@@ -401,22 +428,45 @@ public class ManagerController implements Initializable {
             newTickets.setItems(newobList);
             wipTickets.setItems(wipobList);
             ticketsCounter.setText("Total Tickets: " + Integer.toString(totalT));
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e);
         }
 
     }
-
-/*    @FXML inprogress
-    private void serviceNewMIAction(ActionEvent event) throws IOException {
-        Parent serviceView = FXMLLoader.load(getClass().getResource("serviceTickets.fxml"));
-        Scene loginViewScene = new Scene(serviceView);
-
-        //this will get the stage information
+    @FXML
+    private void ticketsOnAction(ActionEvent event) throws IOException {
+        MenuItem miEvent = (MenuItem) event.getSource();
+        String mieID = miEvent.getId();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("serviceTickets.fxml"));
+        fxmlLoader.load();
+        Parent serviceView = fxmlLoader.getRoot();
+        Scene serviceViewScene = new Scene(serviceView);
+        ServiceTicketsController sc = fxmlLoader.getController();
         Stage window;
-        window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        window.setScene(loginViewScene);
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(serviceViewScene);
         window.show();
-    }*/
+
+        ArrayList<Tickets> newServiceTickets = new ArrayList<>();
+
+        JSONArray Invoice = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=jg23&password=I$lovedogs4433&request=getInvoice"));
+
+        for (int i = 0; i < Invoice.length(); i++) {
+            JSONObject invoices = Invoice.getJSONObject(i);
+            System.out.println(invoices);
+            String strCusNum = invoices.getString("Cus_CustomerNumber").toString();
+            String strInvoiceID = invoices.getString("Ser_InvoiceId").toString();
+
+
+            newServiceTickets.add(new Tickets(strCusNum, strInvoiceID));
+
+        }
+
+        //ListProperty<Tickets> lpTickets = new SimpleListProperty<>();
+        ObservableList<Tickets> tickList = FXCollections.observableArrayList(newServiceTickets);
+
+        //lpTickets.set(FXCollections.observableArrayList(newServiceTickets));
+        sc.setList((ListProperty) tickList);
+
+    }
 }

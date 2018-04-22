@@ -7,14 +7,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ServiceTicketsController">
    <right>
       <VBox spacing="8.0" BorderPane.alignment="CENTER">
          <children>
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
             <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancel" />
             <Region layoutX="10.0" layoutY="35.0" VBox.vgrow="ALWAYS" />
-          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Close" />
+          <Button fx:id="close" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeScene" text="Close" />
          </children>
          <BorderPane.margin>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
@@ -33,7 +33,7 @@
       </HBox>
    </bottom>
    <left>
-      <ListView BorderPane.alignment="CENTER">
+      <ListView fx:id="serviceTicketsListView" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </BorderPane.margin>

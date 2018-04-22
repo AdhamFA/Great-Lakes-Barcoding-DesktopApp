@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="json-20180130">
+  <library name="itextpdf-5.5.13">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/JSon/json-20180130.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/IText/itextpdf-5.5.13.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

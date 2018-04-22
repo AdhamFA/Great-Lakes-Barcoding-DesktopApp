@@ -27,29 +27,28 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 
-public class reportController
-{
+public class ReportController {
     @FXML
     private TableView table;
     @FXML
     private Button close;
 
-    public void setTable(ObservableList e){
+    public void setTable(ObservableList e) {
         table.setItems(e);
     }
 
-    public void setTableColumns(TableColumn... args){
+    public void setTableColumns(TableColumn... args) {
         table.getColumns().addAll(args);
     }
 
     @FXML
-    private void closeScene(ActionEvent event) throws IOException{
+    private void closeScene(ActionEvent event) throws IOException {
         Parent managerView = FXMLLoader.load(getClass().getResource("manager.fxml"));
         Scene managerViewScene = new Scene(managerView);
 
         //this will get the stage information
         Stage window;
-        window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(managerViewScene);
 
         window.show();
