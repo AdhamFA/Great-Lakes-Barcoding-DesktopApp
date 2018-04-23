@@ -499,4 +499,9 @@ public class ManagerController {
         else
             updateTickets.setDisable(true);
     }
+
+    public void resetColumns(){
+        newTickets.getColumns().clear();
+        wipTickets.getColumns().clear();
+    }
 }

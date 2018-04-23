@@ -76,14 +76,14 @@ public class LoginController {
         String error, userName = txtUN.getText().toString();
         String un = txtUN.getText(), pw = txtPW.getText();
 
-        //Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 www.google.com");
-        //int returnVal = p1.waitFor();
-        //boolean reachable = (returnVal == 0);
+        /*Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 dev.cis294.hfcc.edu");
+        int returnVal = p1.waitFor();
+        boolean reachable = (returnVal == 0);
 
-        /*if (!reachable) {
+        if (!reachable) {
             error = "INTERNET IS DOWN, CHECK CONNECTION";
             lblError.setText(error);
-        } else*/ if (txtUN.getText().isEmpty() || txtPW.getText().isEmpty()) {
+        } else */if (txtUN.getText().isEmpty() || txtPW.getText().isEmpty()) {
             error = "PLEASE ENTER USERNAME AND PASSWORD";
             lblError.setText(error);
         } else {

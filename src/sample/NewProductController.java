@@ -56,15 +56,16 @@ public class NewProductController implements Initializable {
 
     @FXML
     private void createProduct(ActionEvent event) throws IOException {
-        Parent managerView = FXMLLoader.load(getClass().getResource("manager.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("manager.fxml"));
+        Parent managerView = loader.load();
         Scene managerViewScene = new Scene(managerView);
 
-        strDES = txtDES.getText();
-        strNAM = txtNAM.getText();
-        strNUM = txtNUM.getText();
-        strPUR = txtPUR.getText();
-        strSAL = txtSAL.getText();
-        strTYP = cmbTYP.getSelectionModel().getSelectedItem();
+        strDES = URLEncoder.encode(txtDES.getText(), "UTF-8");
+        strNAM = URLEncoder.encode(txtNAM.getText(), "UTF-8");
+        strNUM = URLEncoder.encode(txtNUM.getText(), "UTF-8");
+        strPUR = URLEncoder.encode(txtPUR.getText(), "UTF-8");
+        strSAL = URLEncoder.encode(txtSAL.getText(), "UTF-8");
+        strTYP = URLEncoder.encode(cmbTYP.getSelectionModel().getSelectedItem(), "UTF-8");
 
         JSONObject update = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() +
                 "&request=createProduct&productNum=" + strNUM + "&name=" + strNAM + "&type=" + strTYP + "&description=" + strDES + "&minStock=0&stock=0&backOrder=0&wholesale=" +
@@ -79,6 +80,8 @@ public class NewProductController implements Initializable {
             JOptionPane.showMessageDialog(j, "Failed To Create Product.", "Alert" , JOptionPane.WARNING_MESSAGE);
         }
 
+        ManagerController mc = loader.getController();
+        mc.initialize();
         //this will get the stage information
         Stage window;
         window = (Stage) ((Node) event.getSource()).getScene().getWindow();
