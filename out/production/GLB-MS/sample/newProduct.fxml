@@ -7,12 +7,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.NewProductController">
+<BorderPane style="-fx-background-color: #5975a0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.NewProductController">
    <right>
       <VBox spacing="6.0" BorderPane.alignment="CENTER">
          <children>
             <Region VBox.vgrow="ALWAYS" />
-            <Button fx:id="create" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createProduct" text="Create New">
+            <Button fx:id="create" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createProduct" text="Create New">
                <padding>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                </padding>

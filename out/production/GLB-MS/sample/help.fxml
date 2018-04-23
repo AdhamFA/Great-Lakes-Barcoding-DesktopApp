@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2a4066;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HelpController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #5975a0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HelpController">
    <right>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -37,7 +37,7 @@
    <top>
       <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" text="Read Me." textFill="#4895c9">
+            <Label alignment="CENTER" text="Read Me" textAlignment="CENTER" textFill="#0a0a0a">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
