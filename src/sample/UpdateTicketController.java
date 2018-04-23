@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,7 +95,7 @@ public class UpdateTicketController {
     public String readJsonFromUrl(String urlString) throws IOException, JSONException {
         BufferedReader reader = null;
         try {
-            URL url = new URL(urlString);
+            URL url = new URL(URLEncoder.encode(urlString, "UTF-8"));
             reader = new BufferedReader(new InputStreamReader(url.openStream()));
             StringBuffer buffer = new StringBuffer();
             int read;

@@ -43,7 +43,7 @@ public class LoginController {
     }
 
     @FXML
-    public String readJsonFromUrl(String urlString) throws IOException, JSONException {
+    public String readJsonFromUrl(String urlString) throws IOException{ //}, JSONException {
         BufferedReader reader = null;
         try {
             URL url = new URL(urlString);
@@ -56,10 +56,11 @@ public class LoginController {
             if (buffer.equals(""))
                 buffer.append("[]");
             return buffer.toString();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             lblError.setText("INCORRECT CREDENTIALS, CHECK USERNAME OR PASSWORD");
             return null;
-        } finally {
+        } finally
+         {
             if (reader != null)
                 reader.close();
         }
@@ -75,14 +76,14 @@ public class LoginController {
         String error, userName = txtUN.getText().toString();
         String un = txtUN.getText(), pw = txtPW.getText();
 
-        Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 www.google.com");
-        int returnVal = p1.waitFor();
-        boolean reachable = (returnVal == 0);
+        //Process p1 = java.lang.Runtime.getRuntime().exec("ping -n 1 www.google.com");
+        //int returnVal = p1.waitFor();
+        //boolean reachable = (returnVal == 0);
 
-        if (!reachable) {
+        /*if (!reachable) {
             error = "INTERNET IS DOWN, CHECK CONNECTION";
             lblError.setText(error);
-        } else if (txtUN.getText().isEmpty() || txtPW.getText().isEmpty()) {
+        } else*/ if (txtUN.getText().isEmpty() || txtPW.getText().isEmpty()) {
             error = "PLEASE ENTER USERNAME AND PASSWORD";
             lblError.setText(error);
         } else {
