@@ -29,8 +29,8 @@
               <menus>
                   <Menu mnemonicParsing="false" text="Products">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Edit" />
+                      <MenuItem mnemonicParsing="false" onAction="#createProductOnAction" text="New" />
+                        <MenuItem mnemonicParsing="false" onAction="#updateProductOnAction" text="Update" />
                     </items>
                   </Menu>
                 <Menu fx:id="menu_Reports" mnemonicParsing="false" text="Reports">

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.UpdateTicketController">
+   <right>
+      <VBox spacing="8.0" BorderPane.alignment="CENTER">
+         <children>
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="update" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Update">
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </Button>
+            <Button fx:id="cancel" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancelScene" text="Cancel">
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
+   <center>
+      <VBox spacing="8.0">
+         <children>
+            <HBox spacing="4.0">
+               <children>
+                  <Label text="Completion Date:" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <CheckBox fx:id="isDone" maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Job Done?" underline="true" />
+                  <DatePicker fx:id="datePicker" disable="true" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Technician Assigned:" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="comTechID" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Mileage:" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtMIL" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Label text="Hours:" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtTIM" />
+               </children>
+            </HBox>
+            <HBox spacing="4.0">
+               <children>
+                  <Label text="Parts Used:" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextArea fx:id="txtPRT" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" spacing="4.0">
+               <children>
+                  <Label text="Technician Comments:" wrapText="true" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextArea fx:id="txtCMT" />
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>

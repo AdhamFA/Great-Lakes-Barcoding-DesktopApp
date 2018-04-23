@@ -11,7 +11,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<BorderPane fx:id="loginPane" maxHeight="360.0" maxWidth="500.0" minHeight="360.0" minWidth="500.0" style="-fx-background-color: #5975a0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+<BorderPane fx:id="loginPane" prefHeight="300.0" prefWidth="500.0" style="-fx-background-color: #5975a0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
    <center>
       <ImageView pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
@@ -20,46 +20,42 @@
       </ImageView>
    </center>
    <bottom>
-      <VBox>
+      <VBox spacing="4.0" BorderPane.alignment="CENTER">
          <children>
             <HBox spacing="4.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Username:" textFill="#102839" />
-                  <TextField fx:id="txtUN" />
-                  <Region layoutX="435.0" layoutY="12.0" HBox.hgrow="ALWAYS" />
-                  <Label text="Password:" textFill="#102839" />
-                  <PasswordField fx:id="txtPW" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#handleButtonAction" text="Login" />
+                  <Label maxHeight="1.7976931348623157E308" text="Username:" textFill="#102839" HBox.hgrow="ALWAYS" />
+                  <Region layoutX="331.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtUN" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnLogin" defaultButton="true" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" text="Login" HBox.hgrow="ALWAYS" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </BorderPane.margin>
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
             </HBox>
-            <HBox spacing="2.0">
+            <HBox spacing="4.0">
+               <children>
+                  <Label maxHeight="1.7976931348623157E308" text="Password:" textFill="#102839" HBox.hgrow="ALWAYS" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <PasswordField fx:id="txtPW" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnClose" cancelButton="true" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#close" text="Close" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox spacing="4.0">
                <children>
                   <Label fx:id="lblError" textFill="#102839" />
-                  <Region HBox.hgrow="ALWAYS">
-                     <padding>
-                        <Insets right="4.0" />
-                     </padding>
-                  </Region>
-                  <Button fx:id="btnClose" mnemonicParsing="false" onAction="#close" text="Close" />
                </children>
-               <padding>
-                  <Insets bottom="6.0" left="4.0" right="4.0" top="6.0" />
-               </padding>
             </HBox>
          </children>
          <BorderPane.margin>
-            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+            <Insets />
          </BorderPane.margin>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
+         <padding>
+            <Insets left="4.0" right="4.0" />
+         </padding>
       </VBox>
    </bottom>
    <top>
@@ -69,4 +65,7 @@
          </children>
       </FlowPane>
    </top>
+   <padding>
+      <Insets bottom="24.0" />
+   </padding>
 </BorderPane>

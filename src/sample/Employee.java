@@ -17,6 +17,7 @@ public class Employee {
     private final SimpleStringProperty title;
     private final SimpleStringProperty active;
     private final SimpleStringProperty username;
+    private final SimpleStringProperty comboListing;
 
     /*constructor to load up parsed JSON data in the form of objects, before being
     loaded into the columns of the JavaFX tableview*/
@@ -38,6 +39,34 @@ public class Employee {
         this.title = new SimpleStringProperty(title);
         this.active = new SimpleStringProperty(active);
         this.username = new SimpleStringProperty(username);
+        this.comboListing = null;
+    }
+
+    public String getComboListing() {
+        return comboListing.get();
+    }
+
+    public SimpleStringProperty comboListingProperty() {
+        return comboListing;
+    }
+
+    public Employee(String number, String firstN, String lastN){
+        this.number = new SimpleStringProperty(number);
+        this.comboListing = new SimpleStringProperty(number + "-" + lastN + ", " + firstN);
+        this.firstN = null;
+        this.lastN = null;
+        this.active = null;
+        this.bDate = null;
+        this.city = null;
+        this.hDate = null;
+        this.phone = null;
+
+        this.salary = null;
+        this.state = null;
+        this.street = null;
+        this.title = null;
+        this.zip = null;
+        this.username = null;
     }
 
     public String getNumber() {

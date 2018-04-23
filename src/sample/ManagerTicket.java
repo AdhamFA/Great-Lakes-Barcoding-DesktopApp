@@ -9,6 +9,10 @@ public class ManagerTicket {
         this.customerTicketID = new SimpleStringProperty(ticketID + "-" + customer);
     }
 
+    public ManagerTicket(String customerTicketID) {
+        this.customerTicketID = new SimpleStringProperty(customerTicketID);
+    }
+
     public String getCustomerTicketID() {
         return customerTicketID.get();
     }

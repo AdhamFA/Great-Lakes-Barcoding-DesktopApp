@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.beans.property.ListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -84,7 +83,7 @@ public class ManagerController {
         String help, line = bf.readLine();
         StringBuilder sb = new StringBuilder();
 
-        while(line != null){
+        while (line != null) {
             sb.append(line).append("\n");
             line = bf.readLine();
         }
@@ -112,7 +111,7 @@ public class ManagerController {
             case "rprt_Customers":
                 ArrayList<Customer> list = new ArrayList<>();
                 JSONArray customers = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
-                                "&password=" + Credentials.getPass() + "&request=getCustomer"));
+                        "&password=" + Credentials.getPass() + "&request=getCustomer"));
 
                 TableColumn name = new TableColumn("Name");
                 TableColumn street = new TableColumn("Street");
@@ -390,7 +389,8 @@ public class ManagerController {
         window.setScene(reportViewScene);
         window.show();
     }
-    public void initialize(){
+
+    public void initialize() {
         try {
             int totalT = 0;
             ArrayList<ManagerTicket> newTList = new ArrayList<>();
@@ -430,7 +430,7 @@ public class ManagerController {
             wipTickets.setItems(wipobList);
             ticketsCounter.setText("Total Tickets: " + Integer.toString(totalT));
 
-            if(wipTickets.getSelectionModel().isEmpty() && newTickets.getSelectionModel().isEmpty())
+            if (wipTickets.getSelectionModel().isEmpty() && newTickets.getSelectionModel().isEmpty())
                 updateTickets.setDisable(true);
         } catch (IOException e) {
             System.out.println(e);
@@ -439,36 +439,64 @@ public class ManagerController {
     }
 
     @FXML
-    public void updateTicketOnAction(ActionEvent event) throws IOException{
-        ManagerTicket mt;
-        if(!wipTickets.getSelectionModel().isEmpty()){
-            mt = wipTickets.getSelectionModel().getSelectedItem();
-        }
-        else if(!newTickets.getSelectionModel().isEmpty()) {
-            mt = wipTickets.getSelectionModel().getSelectedItem();
-        }
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("editTicket.fxml"));
-        Parent editTicketView = fxmlLoader.load();
-        Scene editTicketViewScene = new Scene(editTicketView);
+    public void updateProductOnAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("updateProduct.fxml"));
+        Parent updateProductView = fxmlLoader.load();
+        Scene updateProductViewScene = new Scene(updateProductView);
         Stage window;
-        EditTicketController editTicketController = fxmlLoader.getController();
-
-
-        window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(editTicketViewScene);
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(updateProductViewScene);
         window.show();
-
     }
 
     @FXML
-    public void onMouseClickedNew(MouseEvent event){
-            wipTickets.getSelectionModel().clearSelection();
-            updateTickets.setDisable(false);
+    public void createProductOnAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newProduct.fxml"));
+        Parent newProductView = fxmlLoader.load();
+        Scene newProductViewScene = new Scene(newProductView);
+        Stage window;
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(newProductViewScene);
+        window.show();
     }
 
     @FXML
-    public void onMouseClickedWip(MouseEvent event){
-            newTickets.getSelectionModel().clearSelection();
+    public void updateTicketOnAction(ActionEvent event) throws IOException {
+        ManagerTicket mt;
+        if (!wipTickets.getSelectionModel().isEmpty()) {
+            mt = new ManagerTicket(wipTickets.getSelectionModel().getSelectedItem().getCustomerTicketID());
+        } else if (!newTickets.getSelectionModel().isEmpty()) {
+            mt = new ManagerTicket(newTickets.getSelectionModel().getSelectedItem().getCustomerTicketID());
+        } else
+            return;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("updateTicket.fxml"));
+        Parent updateTicketView = fxmlLoader.load();
+        Scene updateTicketViewScene = new Scene(updateTicketView);
+        Stage window;
+        UpdateTicketController updateTicketController = fxmlLoader.getController();
+        updateTicketController.initialize(mt);
+
+
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(updateTicketViewScene);
+        window.show();
+    }
+
+    @FXML
+    public void onMouseClickedNew(MouseEvent event) {
+        wipTickets.getSelectionModel().clearSelection();
+        if (!newTickets.getSelectionModel().isEmpty())
             updateTickets.setDisable(false);
+        else
+            updateTickets.setDisable(true);
+    }
+
+    @FXML
+    public void onMouseClickedWip(MouseEvent event) {
+        newTickets.getSelectionModel().clearSelection();
+        if (!wipTickets.getSelectionModel().isEmpty())
+            updateTickets.setDisable(false);
+        else
+            updateTickets.setDisable(true);
     }
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.NewProductController">
+   <right>
+      <VBox spacing="6.0" BorderPane.alignment="CENTER">
+         <children>
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="create" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create New">
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </Button>
+            <Button fx:id="cancel" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancelScene" text="Cancel">
+               <padding>
+                  <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+               </padding>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets left="8.0" right="8.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
+   <center>
+      <HBox spacing="12.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox spacing="12.0">
+               <children>
+                  <HBox maxWidth="1.7976931348623157E308">
+                     <children>
+                        <Label text="Item Number:" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtNUM" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="6.0">
+                     <children>
+                        <Label text="Item Name:" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtNAM" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="6.0">
+                     <children>
+                        <Label text="Sales Price:" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtSAL" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0">
+                     <children>
+                        <Label text="Purchase Price:" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtPUR" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="110.0" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <Label text="Item Type:" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="cmbTYP" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+                  <Label text="Description:" />
+                  <TextArea fx:id="txtDES" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <padding>
+      <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+   </padding>
+</BorderPane>
