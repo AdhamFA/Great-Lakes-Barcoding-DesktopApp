@@ -66,21 +66,9 @@ public class UpdateTicketController {
         Parent managerView = loader.load();
         Scene managerViewScene = new Scene(managerView);
 
-        if(comTechID.getSelectionModel().getSelectedIndex() > -1){
-            if (comTechID.getSelectionModel().getSelectedIndex() > 0)
-                strTechID = strTechs.get(comTechID.getSelectionModel().getSelectedIndex());
-            else
-                strTechID = null;
-        }
-        else
-            strTechID = null;
 
-        if(comTechID.getSelectionModel().getSelectedItem().toString().equals("none")){
-            strStatus = "2";
-            strTechID = null;
-        }
-        else
-            strStatus = "1";
+        strTechID = strTechs.get(comTechID.getSelectionModel().getSelectedIndex());
+        strStatus = "1";
 
         if(!isDone.isSelected()) {
             datePicker.setValue(LocalDate.now());
@@ -147,23 +135,36 @@ public class UpdateTicketController {
             txtTIM.setText(invoice.get("Ser_RepairTime").toString());
             txtMIL.setText(invoice.get("Ser_TechMiles").toString());
             txtCMT.setText(invoice.get("Ser_Comments").toString());
+
+            if (txtCMT.getText().equals("null"))
+                txtCMT.setText("");
+
             txtPRT.setText(invoice.get("Ser_Parts").toString());
+
+            if (txtPRT.getText().equals("null"))
+                txtPRT.setText("");
+
             empTicket = invoice.get("Emp_EmployeeNumber").toString();
 
             strTechs = new ArrayList<>();
 
             for (int i = 0; i < techs.length(); i++) {
                 JSONObject tech = techs.getJSONObject(i);
-                String id = tech.getString("Emp_EmployeeNumber");
-                String fName = tech.getString("Emp_FirstName");
-                String lName = tech.getString("Emp_LastName");
+                String id = tech.get("Emp_EmployeeNumber").toString();
+                String fName = tech.get("Emp_FirstName").toString();
+                String lName = tech.get("Emp_LastName").toString();
                 idList.add(id + "-" + lName + ", " + fName);
                 strTechs.add(id);
             }
             ObservableList<String> idOBList = FXCollections.observableArrayList(idList);
 
             comTechID.setItems(idOBList);
+
             comTechID.getSelectionModel().select(strTechs.indexOf(empTicket));
+
+            if(empTicket.equals("null"))
+                comTechID.getSelectionModel().selectFirst();
+
             txtMIL.textProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
