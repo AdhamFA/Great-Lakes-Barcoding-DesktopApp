@@ -81,6 +81,7 @@ public class NewProductController implements Initializable {
         }
 
         ManagerController mc = loader.getController();
+        mc.resetColumns();
         mc.initialize();
         //this will get the stage information
         Stage window;
@@ -93,7 +94,7 @@ public class NewProductController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<String> combo = new ArrayList<>();
-        combo.add("Label");combo.add("Printer");combo.add("Scanner");
+        combo.add("Label");combo.add("Printer");combo.add("Scanner");combo.add("Part");
         ObservableList<String> obCombo = FXCollections.observableArrayList(combo);
         cmbTYP.setItems(obCombo);
 

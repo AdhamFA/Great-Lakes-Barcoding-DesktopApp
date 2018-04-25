@@ -37,7 +37,7 @@ public class ManagerController {
 
     @FXML //this method will change the scene when the button is clicked and the requirements are met
     private void logoutButtonAction(ActionEvent event) throws IOException {
-        Parent loginView = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent loginView = FXMLLoader.load(getClass().getResource("login.fxml"));
         Scene loginViewScene = new Scene(loginView);
         newTickets.getItems().clear();
         wipTickets.getItems().clear();
@@ -254,69 +254,6 @@ public class ManagerController {
                 rc.setTable(eobList);
                 break;
 
-            case "rprt_Invoices":
-                ArrayList<Invoice> ilist = new ArrayList<>();
-                JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
-                        "&password=" + Credentials.getPass() + "&request=getInvoice"));
-
-                TableColumn invoiceNum = new TableColumn("Invoice Number");
-                TableColumn customer = new TableColumn("Customer");
-                TableColumn poNum = new TableColumn("PO Number");
-                TableColumn status = new TableColumn("Status");
-                TableColumn empNum = new TableColumn("Employee Number");
-                TableColumn requested = new TableColumn("Date Requested");
-                TableColumn completed = new TableColumn("Date Completed");
-                TableColumn reason = new TableColumn("Reason for Service");
-                TableColumn repairTime = new TableColumn("Repair Time");
-                TableColumn comments = new TableColumn("Technician Comments");
-                TableColumn parts = new TableColumn("Parts Used");
-                TableColumn techMiles = new TableColumn("Technician Mileage");
-                TableColumn balance = new TableColumn("Service Balance");
-                rc.setTableColumns(invoiceNum, customer, poNum, status, empNum, requested, completed,
-                        reason, repairTime, comments, parts, techMiles, balance);
-
-                for (int i = 0; i < invoices.length(); i++) {
-                    JSONObject invoice = invoices.getJSONObject(i);
-                    System.out.println(invoice);
-                    String strInvId = invoice.get("Ser_InvoiceId").toString();
-                    String strCusNum = invoice.get("Cus_CustomerNumber").toString();
-                    String strPO = invoice.get("Ser_PurchaseOrder").toString();
-                    String strStat = invoice.get("Ser_Status").toString();
-                    String strEmpNum = invoice.get("Emp_EmployeeNumber").toString();
-                    String strReqDate = invoice.get("Ser_DateRequested").toString();
-                    String strCompDate = invoice.get("Ser_DateCompleted").toString();
-                    String strReason = invoice.get("Ser_Reason").toString();
-                    String strRepairTime = invoice.get("Ser_RepairTime").toString();
-                    String strComments = invoice.get("Ser_Comments").toString();
-                    String strParts = invoice.get("Ser_Parts").toString();
-                    String strMiles = invoice.get("Ser_TechMiles").toString();
-                    String strBalance = invoice.get("Ser_Balance").toString();
-
-                    //if completed date is NOT NULL, display invoice
-                    if (Integer.parseInt(strStat) != 0)
-                        continue;
-
-                    ilist.add(new Invoice(strInvId, strCusNum, strPO, strStat, strEmpNum, strReqDate, strCompDate,
-                            strReason, strRepairTime, strComments, strParts, strMiles, strBalance));
-                }
-                System.out.println(ilist);
-                ObservableList<Invoice> iobList = FXCollections.observableArrayList(ilist);
-                invoiceNum.setCellValueFactory(new PropertyValueFactory<Invoice, String>("iNumber"));
-                customer.setCellValueFactory(new PropertyValueFactory<Invoice, String>("cNumber"));
-                poNum.setCellValueFactory(new PropertyValueFactory<Invoice, String>("poNumber"));
-                status.setCellValueFactory(new PropertyValueFactory<Invoice, String>("stat"));
-                empNum.setCellValueFactory(new PropertyValueFactory<Invoice, String>("eNumber"));
-                requested.setCellValueFactory(new PropertyValueFactory<Invoice, String>("reqDate"));
-                completed.setCellValueFactory(new PropertyValueFactory<Invoice, String>("compDate"));
-                reason.setCellValueFactory(new PropertyValueFactory<Invoice, String>("reason"));
-                repairTime.setCellValueFactory(new PropertyValueFactory<Invoice, String>("rTime"));
-                comments.setCellValueFactory(new PropertyValueFactory<Invoice, String>("comment"));
-                parts.setCellValueFactory(new PropertyValueFactory<Invoice, String>("part"));
-                techMiles.setCellValueFactory(new PropertyValueFactory<Invoice, String>("tMiles"));
-                balance.setCellValueFactory(new PropertyValueFactory<Invoice, String>("iBalance"));
-
-                rc.setTable(iobList);
-                break;
 
             //Katrina attempting to code some more
             case "rprt_Tickets":
@@ -461,6 +398,28 @@ public class ManagerController {
     }
 
     @FXML
+    public void updateEmployeeOnAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("updateEmployee.fxml"));
+        Parent updateEmployeeView = fxmlLoader.load();
+        Scene updateEmployeeViewScene = new Scene(updateEmployeeView);
+        Stage window;
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(updateEmployeeViewScene);
+        window.show();
+    }
+
+    @FXML
+    public void createEmployeeOnAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newEmployee.fxml"));
+        Parent newEmployeeView = fxmlLoader.load();
+        Scene newEmployeeViewScene = new Scene(newEmployeeView);
+        Stage window;
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(newEmployeeViewScene);
+        window.show();
+    }
+
+    @FXML
     public void updateTicketOnAction(ActionEvent event) throws IOException {
         ManagerTicket mt;
         if (!wipTickets.getSelectionModel().isEmpty()) {
@@ -477,6 +436,17 @@ public class ManagerController {
         updateTicketController.initialize(mt);
 
 
+        window = (Stage) (root.getScene().getWindow());
+        window.setScene(updateTicketViewScene);
+        window.show();
+    }
+
+    @FXML
+    public void invoiceReportsOnAction(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("invoices.fxml"));
+        Parent updateTicketView = fxmlLoader.load();
+        Scene updateTicketViewScene = new Scene(updateTicketView);
+        Stage window;
         window = (Stage) (root.getScene().getWindow());
         window.setScene(updateTicketViewScene);
         window.show();

@@ -27,6 +27,12 @@
          <children>
             <MenuBar>
               <menus>
+                  <Menu mnemonicParsing="false" text="Employees">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#createEmployeeOnAction" text="New" />
+                        <MenuItem mnemonicParsing="false" onAction="#updateEmployeeOnAction" text="Update" />
+                    </items>
+                  </Menu>
                   <Menu mnemonicParsing="false" text="Products">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#createProductOnAction" text="New" />
@@ -36,7 +42,7 @@
                 <Menu fx:id="menu_Reports" mnemonicParsing="false" text="Reports">
                   <items>
                     <MenuItem fx:id="rprt_Tickets" mnemonicParsing="false" onAction="#rprtOnAction" text="Tickets" />
-                        <MenuItem fx:id="rprt_Invoices" mnemonicParsing="false" onAction="#rprtOnAction" text="Invoices" />
+                        <MenuItem fx:id="rprt_Invoices" mnemonicParsing="false" onAction="#invoiceReportsOnAction" text="Invoices" />
                         <MenuItem fx:id="rprt_Employees" mnemonicParsing="false" onAction="#rprtOnAction" text="Employees" />
                         <MenuItem fx:id="rprt_Customers" mnemonicParsing="false" onAction="#rprtOnAction" text="Customers" />
                         <MenuItem fx:id="rprt_Products" mnemonicParsing="false" onAction="#rprtOnAction" text="Products" />
