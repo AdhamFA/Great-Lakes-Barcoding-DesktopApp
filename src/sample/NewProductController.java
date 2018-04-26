@@ -16,6 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,42 +60,64 @@ public class NewProductController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("manager.fxml"));
         Parent managerView = loader.load();
         Scene managerViewScene = new Scene(managerView);
+        Boolean exists = false;
 
-        strDES = URLEncoder.encode(txtDES.getText(), "UTF-8");
-        strNAM = URLEncoder.encode(txtNAM.getText(), "UTF-8");
-        strNUM = URLEncoder.encode(txtNUM.getText(), "UTF-8");
-        strPUR = URLEncoder.encode(txtPUR.getText(), "UTF-8");
-        strSAL = URLEncoder.encode(txtSAL.getText(), "UTF-8");
-        strTYP = URLEncoder.encode(cmbTYP.getSelectionModel().getSelectedItem(), "UTF-8");
-
-        JSONObject update = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() +
-                "&request=createProduct&productNum=" + strNUM + "&name=" + strNAM + "&type=" + strTYP + "&description=" + strDES + "&minStock=0&stock=0&backOrder=0&wholesale=" +
-                strPUR + "&retail="+strSAL));
-        boolean result = update.getBoolean("result");
-        if (result) {
+        if (txtDES.getText().isEmpty() || txtNAM.getText().isEmpty() || txtNUM.getText().isEmpty() || txtSAL.getText().isEmpty() || txtPUR.getText().isEmpty() || cmbTYP.getSelectionModel().isEmpty()) {
             JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j,"Product Created Successfully!");
-        }
-        else if (!result){
-            JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j, "Failed To Create Product.", "Alert" , JOptionPane.WARNING_MESSAGE);
-        }
+            JOptionPane.showMessageDialog(j, "Please Make Sure All Fields Are Filled.");
+        } else {
+            JSONArray products = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() +
+                    "&request=getProduct"));
 
-        ManagerController mc = loader.getController();
-        mc.resetColumns();
-        mc.initialize();
-        //this will get the stage information
-        Stage window;
-        window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(managerViewScene);
+            for (int i = 0; i < products.length(); i++) {
+                JSONObject product = products.getJSONObject(i);
+                String partNum = product.get("Inv_ItemNumber").toString();
+                if (partNum.equals(txtNAM.getText()))
+                    exists = true;
+            }
+            if(!exists){
+            strDES = URLEncoder.encode(txtDES.getText(), "UTF-8");
+            strNAM = URLEncoder.encode(txtNAM.getText(), "UTF-8");
+            strNUM = URLEncoder.encode(txtNUM.getText(), "UTF-8");
+            strPUR = URLEncoder.encode(txtPUR.getText(), "UTF-8");
+            strSAL = URLEncoder.encode(txtSAL.getText(), "UTF-8");
+            strTYP = URLEncoder.encode(cmbTYP.getSelectionModel().getSelectedItem(), "UTF-8");
 
-        window.show();
+            JSONObject update = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() +
+                    "&request=createProduct&productNum=" + strNUM + "&name=" + strNAM + "&type=" + strTYP + "&description=" + strDES + "&minStock=0&stock=0&backOrder=0&wholesale=" +
+                    strPUR + "&retail=" + strSAL));
+            boolean result = update.getBoolean("result");
+            if (result) {
+                JFrame j = new JFrame();
+                JOptionPane.showMessageDialog(j, "Product Created Successfully!");
+            } else if (!result) {
+                JFrame j = new JFrame();
+                JOptionPane.showMessageDialog(j, "Failed To Create Product.", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
+
+            ManagerController mc = loader.getController();
+            mc.resetColumns();
+            mc.initialize();
+            //this will get the stage information
+            Stage window;
+            window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(managerViewScene);
+
+            window.show();}
+            else {
+                JFrame j = new JFrame();
+                JOptionPane.showMessageDialog(j, "Product Already Created.");
+            }
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<String> combo = new ArrayList<>();
-        combo.add("Label");combo.add("Printer");combo.add("Scanner");combo.add("Part");
+        combo.add("Label");
+        combo.add("Printer");
+        combo.add("Scanner");
+        combo.add("Part");
         ObservableList<String> obCombo = FXCollections.observableArrayList(combo);
         cmbTYP.setItems(obCombo);
 
@@ -128,6 +151,7 @@ public class NewProductController implements Initializable {
     public String readJsonFromUrl(String urlString) throws IOException, JSONException {
         BufferedReader reader = null;
         try {
+            System.out.println(urlString);
             URL url = new URL(urlString);
             reader = new BufferedReader(new InputStreamReader(url.openStream()));
             StringBuffer buffer = new StringBuffer();
@@ -137,13 +161,12 @@ public class NewProductController implements Initializable {
                 buffer.append(chars, 0, read);
             if (buffer.equals(""))
                 buffer.append("[]");
-            return buffer.toString();}
-            catch (Throwable e){
-                JFrame j = new JFrame();
-                JOptionPane.showMessageDialog(j, "Failed To Create Product.", "Alert" , JOptionPane.WARNING_MESSAGE);
-                return null;
-            }
-         finally {
+            return buffer.toString();
+        } catch (Throwable e) {
+            JFrame j = new JFrame();
+            JOptionPane.showMessageDialog(j, "Failed To Create Product.", "Alert", JOptionPane.WARNING_MESSAGE);
+            return null;
+        } finally {
             if (reader != null)
                 reader.close();
         }

@@ -7,12 +7,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="166.0" prefWidth="344.0" style="-fx-background-color: #5975a0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.UpdateEmployeeController">
+<BorderPane style="-fx-background-color: #5975a0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.UpdateEmployeeController">
    <right>
       <VBox spacing="6.0" BorderPane.alignment="CENTER">
          <children>
             <Region VBox.vgrow="ALWAYS" />
-            <Button fx:id="create" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Update">
+            <Button fx:id="create" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#updateEmployee" text="Update">
                <padding>
                   <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                </padding>
@@ -37,7 +37,7 @@
                      <children>
                         <Label text="Employee ID:" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <ComboBox fx:id="comID" prefWidth="150.0" />
+                        <ComboBox fx:id="comID" onAction="#comboAction" prefWidth="150.0" />
                      </children>
                   </HBox>
                   <HBox maxWidth="1.7976931348623157E308">
@@ -86,14 +86,16 @@
                      <children>
                         <Label text="Phone Number:" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="txtNUM" />
+                        <TextField fx:id="txtNUM1" prefHeight="39.0" prefWidth="72.0" />
+                        <TextField fx:id="txtNUM2" layoutX="262.0" layoutY="10.0" prefHeight="39.0" prefWidth="72.0" />
+                        <TextField fx:id="txtNUM3" layoutX="262.0" layoutY="10.0" prefHeight="39.0" prefWidth="80.0" />
                      </children>
                   </HBox>
                   <HBox layoutX="10.0" layoutY="343.0" maxWidth="1.7976931348623157E308">
                      <children>
                         <Label text="Salary:" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="txtSal" />
+                        <TextField fx:id="txtSalary" />
                      </children>
                   </HBox>
                   <HBox layoutX="10.0" layoutY="269.0" maxWidth="1.7976931348623157E308">

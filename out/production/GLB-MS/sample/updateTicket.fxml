@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -31,6 +33,14 @@
    <center>
       <VBox spacing="8.0">
          <children>
+            <HBox layoutX="10.0" layoutY="440.0" spacing="4.0">
+               <children>
+                  <Label text="Service Ticket Reason:" wrapText="true" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextArea fx:id="txtReason" editable="false" />
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
             <HBox spacing="4.0">
                <children>
                   <Label text="Completion Date:" />
@@ -60,13 +70,52 @@
                   <TextField fx:id="txtTIM" />
                </children>
             </HBox>
+            <Separator prefWidth="200.0" />
             <HBox spacing="4.0">
                <children>
-                  <Label text="Parts Used:" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <TextArea fx:id="txtPRT" />
+                  <Label text="Parts Used:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                </children>
             </HBox>
+            <HBox layoutX="10.0" layoutY="200.0" spacing="4.0">
+               <children>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label text="Item Comments:" />
+                  <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtLineComment" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="142.0" spacing="4.0">
+               <children>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label text="Item Number:" />
+                  <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="comPartNum" prefWidth="150.0" />
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="175.0" spacing="4.0">
+               <children>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label text="Item Quantity:" />
+                  <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtLineQuan" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Button fx:id="deleteLine" mnemonicParsing="false" text="Delete Selected" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="addLine" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Add new item" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="table" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <Separator layoutX="10.0" layoutY="142.0" prefWidth="200.0" />
             <HBox layoutX="10.0" layoutY="10.0" spacing="4.0">
                <children>
                   <Label text="Technician Comments:" wrapText="true" />

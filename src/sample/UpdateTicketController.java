@@ -35,13 +35,16 @@ public class UpdateTicketController {
     private ArrayList<String> strTechs;
 
     @FXML
-    private Button cancel, update;
+    private TableView table;
+
     @FXML
-    private TextField txtMIL, txtTIM;
+    private Button cancel, update, deleteLine, addLine;
+    @FXML
+    private TextField txtMIL, txtTIM, txtLineQuan, txtLineComment;
     @FXML
     private TextArea txtPRT, txtCMT;
     @FXML
-    private ComboBox comTechID;
+    private ComboBox comTechID, comPartNum;
     @FXML
     private CheckBox isDone;
     @FXML
@@ -125,6 +128,8 @@ public class UpdateTicketController {
             strInvID = splitID[0];
 
             ArrayList<String> idList = new ArrayList<>();
+
+           // JSONArray parts = new JSONArray(readJsonFromUrl(""))
 
             JSONArray techs = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
                     "&password=" + Credentials.getPass() + "&request=getEmployee&title=technician"));

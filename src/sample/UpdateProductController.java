@@ -60,32 +60,37 @@ public class UpdateProductController implements Initializable {
         Parent managerView = FXMLLoader.load(getClass().getResource("manager.fxml"));
         Scene managerViewScene = new Scene(managerView);
 
-        strMIN = URLEncoder.encode(txtMIN.getText(), "UTF-8");
-        strCUR = URLEncoder.encode(txtCUR.getText(), "UTF-8");
-        strON = URLEncoder.encode(txtON.getText(), "UTF-8");
-        strPURCH = URLEncoder.encode(txtON.getText(), "UTF-8");
-        strSALE = URLEncoder.encode(txtON.getText(), "UTF-8");
-
-        JSONObject result = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
-                "&password=" + Credentials.getPass() + "&request=updateProduct&productNum=" + id + "&minStock=" + strMIN + "&stock=" + strCUR +
-                "&backOrder=" + strON + "&wholesale=" + strPURCH + "&retail=" + strSALE));
-
-        boolean isWorking = result.getBoolean("result");
-        if (isWorking) {
+        if (txtMIN.getText().isEmpty() || txtCUR.getText().isEmpty() || txtON.getText().isEmpty() || txtPURCH.getText().isEmpty() || txtSALE.getText().isEmpty()){
             JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j,"Product Successfully Updated!");
-        }
-        else if (!isWorking){
-            JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j, "Failed To Update Product.", "Alert" , JOptionPane.WARNING_MESSAGE);
-        }
+            JOptionPane.showMessageDialog(j,"Please Make Sure All Fields Are Filled.");
+        } else {
 
-        //this will get the stage information
-        Stage window;
-        window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(managerViewScene);
+            strMIN = URLEncoder.encode(txtMIN.getText(), "UTF-8");
+            strCUR = URLEncoder.encode(txtCUR.getText(), "UTF-8");
+            strON = URLEncoder.encode(txtON.getText(), "UTF-8");
+            strPURCH = URLEncoder.encode(txtPURCH.getText(), "UTF-8");
+            strSALE = URLEncoder.encode(txtSALE.getText(), "UTF-8");
 
-        window.show();
+            JSONObject result = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                    "&password=" + Credentials.getPass() + "&request=updateProduct&productNum=" + id + "&minStock=" + strMIN + "&stock=" + strCUR +
+                    "&backOrder=" + strON + "&wholesale=" + strPURCH + "&retail=" + strSALE));
+
+            boolean isWorking = result.getBoolean("result");
+            if (isWorking) {
+                JFrame j = new JFrame();
+                JOptionPane.showMessageDialog(j, "Product Successfully Updated!");
+            } else if (!isWorking) {
+                JFrame j = new JFrame();
+                JOptionPane.showMessageDialog(j, "Failed To Update Product.", "Alert", JOptionPane.WARNING_MESSAGE);
+            }
+
+            //this will get the stage information
+            Stage window;
+            window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(managerViewScene);
+
+            window.show();
+        }
     }
 
     @Override
