@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -34,9 +35,14 @@ public class UpdateEmployeeController implements Initializable {
     @FXML
     private ComboBox comID;
     @FXML
-    private TextField txtFName, txtLName, txtStreet, txtCity, txtState,
+    private CheckBox checkActive;
+    @FXML
+    private ComboBox<String> comState;
+    @FXML
+    private TextField txtFName, txtLName, txtStreet, txtCity,
             txtZIP, txtNUM1, txtNUM2, txtNUM3, txtSalary, txtTitle, txtUser;
 
+    private String[] strActive;
     private String[] strFname;
     private String[] strLname;
     private String[] strAddr;
@@ -69,6 +75,26 @@ public class UpdateEmployeeController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        ArrayList<String> combo = new ArrayList<>();
+
+
+        combo.add("AL");combo.add("AK");combo.add("AZ");combo.add("AR");
+        combo.add("CA");combo.add("CO");combo.add("CT");combo.add("DE");
+        combo.add("FL");combo.add("GA");combo.add("HI");combo.add("ID");
+        combo.add("IL");combo.add("IN");combo.add("IA");combo.add("KS");
+        combo.add("KY");combo.add("LA");combo.add("ME");combo.add("MD");
+        combo.add("MA");combo.add("MI");combo.add("MN");combo.add("MS");
+        combo.add("MO");combo.add("MT");combo.add("NE");combo.add("NV");
+        combo.add("NH");combo.add("NJ");combo.add("NM");combo.add("NY");
+        combo.add("NC");combo.add("ND");combo.add("OH");combo.add("OK");
+        combo.add("OR");combo.add("PA");combo.add("RI");combo.add("SC");
+        combo.add("SD");combo.add("TN");combo.add("TX");combo.add("UT");
+        combo.add("VT");combo.add("VA");combo.add("WA");combo.add("WV");
+        combo.add("WI");combo.add("WY");
+
+        ObservableList<String> obCombo = FXCollections.observableArrayList(combo);
+        comState.setItems(obCombo);
+
         try {
             //fill combo box
             ArrayList<String> eList = new ArrayList<>();
@@ -87,6 +113,7 @@ public class UpdateEmployeeController implements Initializable {
             strNum1 = new String[employees.length()];
             strNum2 = new String[employees.length()];
             strNum3 = new String[employees.length()];
+            strActive = new String[employees.length()];
             String strstr = new String();
             String[] strPhone;
 
@@ -107,6 +134,7 @@ public class UpdateEmployeeController implements Initializable {
                 strSalary[i] = employee.get("Emp_Salary").toString();
                 strTitle[i]  = employee.get("Emp_JobTitle").toString();
                 strUsrn[i]   = employee.get("Emp_Username").toString();
+                strActive[i] = employee.get("Emp_Active").toString();
 
                 eList.add(strEmpNum);
             }
@@ -195,7 +223,7 @@ public class UpdateEmployeeController implements Initializable {
 
         txtCity.setText((strCity[comID.getSelectionModel().getSelectedIndex()]));
 
-        txtState.setText((strState[comID.getSelectionModel().getSelectedIndex()]));
+        comState.getSelectionModel().select(strState[comID.getSelectionModel().getSelectedIndex()]);
 
         txtZIP.setText((strZip[comID.getSelectionModel().getSelectedIndex()]));
 
@@ -211,6 +239,11 @@ public class UpdateEmployeeController implements Initializable {
 
         txtUser.setText((strUsrn[comID.getSelectionModel().getSelectedIndex()]));
 
+        if(strActive[comID.getSelectionModel().getSelectedIndex()].equals("A"))
+            checkActive.setSelected(true);
+        else
+            checkActive.setSelected(false);
+
     }
 
     @FXML
@@ -222,7 +255,7 @@ public class UpdateEmployeeController implements Initializable {
         String strLname = URLEncoder.encode(txtLName.getText(), "UTF-8");
         String strAddr = URLEncoder.encode(txtStreet.getText(), "UTF-8");
         String strCity = URLEncoder.encode(txtCity.getText(), "UTF-8");
-        String strState = URLEncoder.encode(txtState.getText(), "UTF-8");
+        String strState = URLEncoder.encode(comState.getSelectionModel().getSelectedItem(), "UTF-8");
         String strZip = URLEncoder.encode(txtZIP.getText(), "UTF-8");
         String strNum1 = URLEncoder.encode(txtNUM1.getText(), "UTF-8");
         String strNum2 = URLEncoder.encode(txtNUM2.getText(), "UTF-8");
@@ -230,19 +263,25 @@ public class UpdateEmployeeController implements Initializable {
         String strSalary = URLEncoder.encode(txtSalary.getText(), "UTF-8");
         String strTitle = URLEncoder.encode(txtTitle.getText(), "UTF-8");
         String strUsrn = URLEncoder.encode(txtUser.getText(), "UTF-8");
+        String strSelected;
+
+        if (checkActive.isSelected())
+            strSelected = "A";
+        else
+            strSelected = "I";
 
         JSONObject result = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
-                "&password=" + Credentials.getPass() + "&request=updateProductEmployee&empNum=" + id + "&fName=" + strFname + "&lName=" + strLname +
+                "&password=" + Credentials.getPass() + "&request=updateEmployee&empNum=" + id + "&fName=" + strFname + "&lName=" + strLname +
                 "&address=" + strAddr + "&city=" + strCity + "&state=" + strState + "&zip=" + strZip + "&phone=" + strNum1 + "-" + strNum2 + "-" + strNum3 +
-                "&salary=" + strSalary + "&title=" + strTitle + "&empUser=" + strUsrn));
+                "&salary=" + strSalary + "&title=" + strTitle + "&empUser=" + strUsrn + "&active=" + strSelected));
         boolean isWorking = result.getBoolean("result");
         if (isWorking) {
             JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j,"Product Successfully Updated!");
+            JOptionPane.showMessageDialog(j,"Account Successfully Updated!");
         }
         else if (!isWorking){
             JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j, "Failed To Update Product.", "Alert" , JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(j, "Failed To Update Account.", "Alert" , JOptionPane.WARNING_MESSAGE);
         }
 
         //this will get the stage information

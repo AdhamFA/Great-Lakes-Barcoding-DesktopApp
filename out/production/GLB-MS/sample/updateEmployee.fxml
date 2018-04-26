@@ -35,6 +35,12 @@
                <children>
                   <HBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308">
                      <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <CheckBox fx:id="checkActive" mnemonicParsing="false" text="Active" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308">
+                     <children>
                         <Label text="Employee ID:" />
                         <Region HBox.hgrow="ALWAYS" />
                         <ComboBox fx:id="comID" onAction="#comboAction" prefWidth="150.0" />
@@ -72,7 +78,7 @@
                      <children>
                         <Label text="State:" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="txtState" />
+                        <ComboBox fx:id="comState" prefWidth="150.0" />
                      </children>
                   </HBox>
                   <HBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308">
@@ -82,13 +88,13 @@
                         <TextField fx:id="txtZIP" />
                      </children>
                   </HBox>
-                  <HBox layoutX="10.0" layoutY="224.0" maxWidth="1.7976931348623157E308">
+                  <HBox layoutX="10.0" layoutY="224.0">
                      <children>
                         <Label text="Phone Number:" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="txtNUM1" prefHeight="39.0" prefWidth="72.0" />
-                        <TextField fx:id="txtNUM2" layoutX="262.0" layoutY="10.0" prefHeight="39.0" prefWidth="72.0" />
-                        <TextField fx:id="txtNUM3" layoutX="262.0" layoutY="10.0" prefHeight="39.0" prefWidth="80.0" />
+                        <TextField fx:id="txtNUM1" prefHeight="25.0" prefWidth="50.0" />
+                        <TextField fx:id="txtNUM2" layoutX="262.0" layoutY="10.0" prefHeight="25.0" prefWidth="49.0" />
+                        <TextField fx:id="txtNUM3" layoutX="262.0" layoutY="10.0" prefHeight="25.0" prefWidth="50.0" />
                      </children>
                   </HBox>
                   <HBox layoutX="10.0" layoutY="343.0" maxWidth="1.7976931348623157E308">
