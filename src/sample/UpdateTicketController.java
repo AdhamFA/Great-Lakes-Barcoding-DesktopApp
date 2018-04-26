@@ -42,7 +42,7 @@ public class UpdateTicketController {
     @FXML
     private TextField txtMIL, txtTIM, txtLineQuan, txtLineComment;
     @FXML
-    private TextArea txtPRT, txtCMT;
+    private TextArea txtCMT;
     @FXML
     private ComboBox comTechID, comPartNum;
     @FXML
@@ -91,7 +91,6 @@ public class UpdateTicketController {
         else
             strTIM = URLEncoder.encode(txtTIM.getText(), "UTF-8");
         strCMT = URLEncoder.encode(txtCMT.getText(), "UTF-8");
-        strPRT = URLEncoder.encode(txtPRT.getText(), "UTF-8");
 
         JSONObject update = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
                 "&password=" + Credentials.getPass() + "&request=updateInvoice&invoiceId=" + strInvID + "&dateCom=" + strDAT + "&status=" + strStatus +
@@ -143,11 +142,6 @@ public class UpdateTicketController {
 
             if (txtCMT.getText().equals("null"))
                 txtCMT.setText("");
-
-            txtPRT.setText(invoice.get("Ser_Parts").toString());
-
-            if (txtPRT.getText().equals("null"))
-                txtPRT.setText("");
 
             empTicket = invoice.get("Emp_EmployeeNumber").toString();
 
