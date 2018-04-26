@@ -31,7 +31,8 @@ import java.util.regex.Pattern;
 
 public class UpdateTicketController {
 
-    private String strMIL, strTIM, strDAT, strTechID, strPRT, strCMT, strInvID, strStatus;
+    private String strMIL, strTIM, strDAT, strTechID, strPRT, strCMT, strInvID, strStatus, strItemNum;
+    private ArrayList<String> strPrice;
     private ArrayList<String> strTechs;
 
     @FXML
@@ -42,9 +43,9 @@ public class UpdateTicketController {
     @FXML
     private TextField txtMIL, txtTIM, txtLineQuan, txtLineComment;
     @FXML
-    private TextArea txtCMT;
+    private TextArea txtCMT, txtReason;
     @FXML
-    private ComboBox comTechID, comPartNum;
+    private ComboBox<String> comTechID, comPartNum;
     @FXML
     private CheckBox isDone;
     @FXML
@@ -126,9 +127,27 @@ public class UpdateTicketController {
             splitID = mt.getCustomerTicketID().split("-");
             strInvID = splitID[0];
 
-            ArrayList<String> idList = new ArrayList<>();
 
-           // JSONArray parts = new JSONArray(readJsonFromUrl(""))
+            ArrayList<String> idList = new ArrayList<>();
+            ArrayList<String> numList = new ArrayList<>();
+
+           JSONArray parts = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                   "&password=" + Credentials.getPass() + "&request=getProduct"));
+
+           strPrice = new ArrayList<>();
+
+           for (int i = 0; i < parts.length(); i++){
+               JSONObject part = parts.getJSONObject(i);
+               if(part.get("Inv_ItemType").toString().equals("Part")){
+                   strPrice.add(part.get("Inv_SaleCost").toString());
+                   numList.add(part.get("Inv_ItemNumber").toString());
+               }
+           }
+           ObservableList<String> olItemNum = FXCollections.observableArrayList(numList);
+           comPartNum.setItems(olItemNum);
+
+           if(comPartNum.getSelectionModel().isEmpty())
+               addLine.setDisable(true);
 
             JSONArray techs = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
                     "&password=" + Credentials.getPass() + "&request=getEmployee&title=technician"));
@@ -139,9 +158,14 @@ public class UpdateTicketController {
             txtTIM.setText(invoice.get("Ser_RepairTime").toString());
             txtMIL.setText(invoice.get("Ser_TechMiles").toString());
             txtCMT.setText(invoice.get("Ser_Comments").toString());
+            txtReason.setText(invoice.get("Ser_Reason").toString());
 
             if (txtCMT.getText().equals("null"))
                 txtCMT.setText("");
+            if (txtReason.getText().equals("null"))
+                txtCMT.setText("");
+
+
 
             empTicket = invoice.get("Emp_EmployeeNumber").toString();
 
@@ -182,6 +206,18 @@ public class UpdateTicketController {
                 }
             });
         }
+    }
+
+    @FXML
+    private void comboAction(ActionEvent event) {
+        addLine.setDisable(false);
+        String strComment = txtLineComment.getText();
+        String strQuantity = txtLineQuan.getText();
+        String strItemNum = comPartNum.getSelectionModel().getSelectedItem();
+        String strItemPrice = strPrice.get(comPartNum.getSelectionModel().getSelectedIndex());
+
+        ArrayList<LineItems> lineArrayList = new ArrayList<>();
+        lineArrayList.add(new LineItems(strInvID, strItemNum, strQuantity, strComment, strItemPrice));
     }
 
     @FXML
