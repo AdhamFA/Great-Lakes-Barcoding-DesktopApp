@@ -92,7 +92,7 @@
                   <Region HBox.hgrow="ALWAYS" />
                   <Label text="Item Number:" />
                   <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
-                  <ComboBox fx:id="comPartNum" prefWidth="150.0" />
+                  <ComboBox fx:id="comPartNum" onAction="#comboAction" prefWidth="150.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="175.0" spacing="4.0">
@@ -105,9 +105,9 @@
             </HBox>
             <HBox>
                <children>
-                  <Button fx:id="deleteLine" mnemonicParsing="false" text="Delete Selected" />
+                  <Button fx:id="deleteLine" mnemonicParsing="false" onAction="#deleteSelected" text="Delete Selected" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="addLine" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Add new item" />
+                  <Button fx:id="addLine" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addLineItem" text="Add new item" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">

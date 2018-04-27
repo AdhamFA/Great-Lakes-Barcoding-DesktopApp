@@ -105,21 +105,14 @@
             </HBox>
             <HBox>
                <children>
-                  <Button fx:id="deleteLine" mnemonicParsing="false" text="Delete Selected" />
+                  <Button fx:id="deleteLine" mnemonicParsing="false" onAction="#deleteSelected" text="Delete Selected" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="addLine" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Add new item" />
+                  <Button fx:id="addLine" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addLineItem" text="Add new item" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="table" HBox.hgrow="ALWAYS">
-                     <columns>
-                        <TableColumn fx:id="itemNum" prefWidth="92.0" text="Item Number" />
-                        <TableColumn fx:id="itemCom" prefWidth="293.0" text="Comments" />
-                        <TableColumn fx:id="itemQua" minWidth="0.0" prefWidth="62.0" text="Quantity" />
-                        <TableColumn fx:id="itemPri" minWidth="0.0" prefWidth="70.0" text="Item Price" />
-                        <TableColumn fx:id="totPri" minWidth="0.0" prefWidth="75.0" text="Total Price" />
-                     </columns></TableView>
+                  <TableView fx:id="table" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <Separator layoutX="10.0" layoutY="142.0" prefWidth="200.0" />

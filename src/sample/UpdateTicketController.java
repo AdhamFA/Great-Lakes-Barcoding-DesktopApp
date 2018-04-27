@@ -26,6 +26,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,9 +36,12 @@ public class UpdateTicketController {
     private String strMIL, strTIM, strDAT, strTechID, strPRT, strCMT, strInvID, strStatus, strItemNum;
     private ArrayList<String> strPrice;
     private ArrayList<String> strTechs;
+    private ObservableList<LineItems> obline = FXCollections.observableArrayList();
 
     @FXML
     private TableView table;
+
+    private TableColumn quantity, itemNumber, comment, price, total;
 
     @FXML
     private Button cancel, update, deleteLine, addLine;
@@ -74,36 +79,50 @@ public class UpdateTicketController {
         strTechID = strTechs.get(comTechID.getSelectionModel().getSelectedIndex());
         strStatus = "1";
 
-        if(!isDone.isSelected()) {
+        if (!isDone.isSelected()) {
             datePicker.setValue(LocalDate.now());
             strDAT = URLEncoder.encode(datePicker.getValue().toString(), "UTF-8");
-        }
-        else {
+        } else {
             strDAT = URLEncoder.encode(datePicker.getValue().toString(), "UTF-8");
             strStatus = "0";
         }
 
-        if(txtMIL.getText().trim().equals(""))
+        if (txtMIL.getText().trim().equals(""))
             strMIL = "0.00";
         else
             strMIL = URLEncoder.encode(txtMIL.getText(), "UTF-8");
-        if(txtTIM.getText().trim().equals(""))
+        if (txtTIM.getText().trim().equals(""))
             strTIM = "0.00";
         else
             strTIM = URLEncoder.encode(txtTIM.getText(), "UTF-8");
         strCMT = URLEncoder.encode(txtCMT.getText(), "UTF-8");
 
+      //  List<LineItems> lineItemsList = table.getItems().;
+        Iterator<LineItems> iterator = table.getItems().iterator();
+        while(iterator.hasNext()){
+            LineItems lineItems = iterator.next();
+            String invoiceID = URLEncoder.encode(lineItems.getInvoiceID(), "UTF-8");
+            String itemNumber = URLEncoder.encode(lineItems.getItemNumber(), "UTF-8");
+            String comment = URLEncoder.encode(lineItems.getComment(), "UTF-8");
+            String quantity = URLEncoder.encode(lineItems.getQuantity(), "UTF-8");
+
+            System.out.println(lineItems);
+
+            JSONObject update = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() +
+                    "&request=createLineItem&invoiceID=" + invoiceID + "&itemNum=" + itemNumber + "&quantity=" + quantity + "&comments=" + comment));
+        }
+
         JSONObject update = new JSONObject(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
                 "&password=" + Credentials.getPass() + "&request=updateInvoice&invoiceId=" + strInvID + "&dateCom=" + strDAT + "&status=" + strStatus +
                 "&time=" + strTIM + "&comment=" + strCMT + "&parts=" + strPRT + "&miles=" + strMIL + "&empNumber=" + strTechID));
+
         String result = update.get("result").toString();
         if (result.equals("true")) {
             JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j,"Ticket Updated Successfully!");
-        }
-        else if (result.equals("false")){
+            JOptionPane.showMessageDialog(j, "Ticket Updated Successfully!");
+        } else if (result.equals("false")) {
             JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j, "Failed To Update Ticket.", "Alert" , JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(j, "Failed To Update Ticket.", "Alert", JOptionPane.WARNING_MESSAGE);
         }
 
         ManagerController mc = loader.getController();
@@ -122,55 +141,58 @@ public class UpdateTicketController {
         datePicker.disableProperty().bind(isDone.selectedProperty().not());
 
         if (!mt.getCustomerTicketID().equals("0-0")) {
+
+            quantity = new TableColumn("Quantity");
+            itemNumber = new TableColumn("Item Number");
+            comment = new TableColumn("Comment");
+            price = new TableColumn("Item Price");
+            total = new TableColumn("Item Total");
+
+            itemNumber.setCellValueFactory(new PropertyValueFactory<LineItems, String>("itemNumber"));
+            comment.setCellValueFactory(new PropertyValueFactory<LineItems, String>("comment"));
+            quantity.setCellValueFactory(new PropertyValueFactory<LineItems, String>("quantity"));
+            price.setCellValueFactory(new PropertyValueFactory<LineItems, String>("price"));
+            total.setCellValueFactory(new PropertyValueFactory<LineItems, String>("total"));
+
+            table.getColumns().addAll(itemNumber, comment, quantity, price, total);
+            table.setItems(obline);
+
+
             String empTicket;
             String[] splitID;
             splitID = mt.getCustomerTicketID().split("-");
             strInvID = splitID[0];
-
-
             ArrayList<String> idList = new ArrayList<>();
             ArrayList<String> numList = new ArrayList<>();
-
-           JSONArray parts = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
-                   "&password=" + Credentials.getPass() + "&request=getProduct"));
-
-           strPrice = new ArrayList<>();
-
-           for (int i = 0; i < parts.length(); i++){
-               JSONObject part = parts.getJSONObject(i);
-               if(part.get("Inv_ItemType").toString().equals("Part")){
-                   strPrice.add(part.get("Inv_SaleCost").toString());
-                   numList.add(part.get("Inv_ItemNumber").toString());
-               }
-           }
-           ObservableList<String> olItemNum = FXCollections.observableArrayList(numList);
-           comPartNum.setItems(olItemNum);
-
-           if(comPartNum.getSelectionModel().isEmpty())
-               addLine.setDisable(true);
-
+            JSONArray parts = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                    "&password=" + Credentials.getPass() + "&request=getProduct"));
+            strPrice = new ArrayList<>();
+            for (int i = 0; i < parts.length(); i++) {
+                JSONObject part = parts.getJSONObject(i);
+                if (part.get("Inv_ItemType").toString().equals("Part")) {
+                    strPrice.add(part.get("Inv_SaleCost").toString());
+                    numList.add(part.get("Inv_ItemNumber").toString());
+                }
+            }
+            ObservableList<String> olItemNum = FXCollections.observableArrayList(numList);
+            comPartNum.setItems(olItemNum);
+            if (comPartNum.getSelectionModel().isEmpty())
+                addLine.setDisable(true);
             JSONArray techs = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
                     "&password=" + Credentials.getPass() + "&request=getEmployee&title=technician"));
-
             JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
-                    "&password=" + Credentials.getPass() + "&request=getInvoice&invoiceId="+strInvID));
+                    "&password=" + Credentials.getPass() + "&request=getInvoice&invoiceId=" + strInvID));
             JSONObject invoice = invoices.getJSONObject(0);
             txtTIM.setText(invoice.get("Ser_RepairTime").toString());
             txtMIL.setText(invoice.get("Ser_TechMiles").toString());
             txtCMT.setText(invoice.get("Ser_Comments").toString());
             txtReason.setText(invoice.get("Ser_Reason").toString());
-
             if (txtCMT.getText().equals("null"))
                 txtCMT.setText("");
             if (txtReason.getText().equals("null"))
                 txtCMT.setText("");
-
-
-
             empTicket = invoice.get("Emp_EmployeeNumber").toString();
-
             strTechs = new ArrayList<>();
-
             for (int i = 0; i < techs.length(); i++) {
                 JSONObject tech = techs.getJSONObject(i);
                 String id = tech.get("Emp_EmployeeNumber").toString();
@@ -180,12 +202,9 @@ public class UpdateTicketController {
                 strTechs.add(id);
             }
             ObservableList<String> idOBList = FXCollections.observableArrayList(idList);
-
             comTechID.setItems(idOBList);
-
             comTechID.getSelectionModel().select(strTechs.indexOf(empTicket));
-
-            if(empTicket.equals("null"))
+            if (empTicket.equals("null"))
                 comTechID.getSelectionModel().selectFirst();
 
             txtMIL.textProperty().addListener(new ChangeListener<String>() {
@@ -211,13 +230,22 @@ public class UpdateTicketController {
     @FXML
     private void comboAction(ActionEvent event) {
         addLine.setDisable(false);
-        String strComment = txtLineComment.getText();
-        String strQuantity = txtLineQuan.getText();
-        String strItemNum = comPartNum.getSelectionModel().getSelectedItem();
-        String strItemPrice = strPrice.get(comPartNum.getSelectionModel().getSelectedIndex());
+    }
 
-        ArrayList<LineItems> lineArrayList = new ArrayList<>();
-        lineArrayList.add(new LineItems(strInvID, strItemNum, strQuantity, strComment, strItemPrice));
+    @FXML
+    private void addLineItem(ActionEvent event) {
+        if (!(txtLineComment.getText().isEmpty() && txtLineQuan.getText().isEmpty())) {
+            String strComment = txtLineComment.getText();
+            String strQuantity = txtLineQuan.getText();
+            String strItemNum = comPartNum.getSelectionModel().getSelectedItem();
+            String strItemPrice = strPrice.get(comPartNum.getSelectionModel().getSelectedIndex());
+            obline.add(new LineItems(strInvID ,strItemNum, strQuantity, strComment, strItemPrice));
+        }
+    }
+
+    @FXML
+    private void deleteSelected(ActionEvent event) {
+        table.getItems().removeAll(table.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -234,13 +262,12 @@ public class UpdateTicketController {
                 buffer.append(chars, 0, read);
             if (buffer.equals(""))
                 buffer.append("[]");
-            return buffer.toString();}
-        catch (Throwable e){
+            return buffer.toString();
+        } catch (Throwable e) {
             JFrame j = new JFrame();
-            JOptionPane.showMessageDialog(j, "Failed To Update Ticket.", "Alert" , JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(j, "Failed To Update Ticket.", "Alert", JOptionPane.WARNING_MESSAGE);
             return null;
-        }
-        finally {
+        } finally {
             if (reader != null)
                 reader.close();
         }

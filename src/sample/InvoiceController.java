@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class InvoiceController implements Initializable {
 
-    private String[] strCompletionDate, strCustomerNumber, strCustomerPO, strTechNumber, strPriceTotal, strComments, strInvoiceID;
+    private ArrayList<String> strCompletionDate, strCustomerNumber, strCustomerPO, strTechNumber, strPriceTotal, strComments, strInvoiceID;
     private String strID;
 
     @FXML
@@ -58,32 +58,30 @@ public class InvoiceController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             JSONArray invoices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() + "&request=getInvoice"));
-            strComments = new String[invoices.length()];
-            strInvoiceID = new String[invoices.length()];
-            strPriceTotal = new String[invoices.length()];
-            strTechNumber = new String[invoices.length()];
-            strCustomerPO = new String[invoices.length()];
-            strCustomerNumber = new String[invoices.length()];
-            strCompletionDate = new String[invoices.length()];
-            ArrayList<String> id = new ArrayList<>();
+            strComments = new ArrayList<>();
+            strInvoiceID = new ArrayList<>();
+            strPriceTotal = new ArrayList<>();
+            strTechNumber = new ArrayList<>();
+            strCustomerPO = new ArrayList<>();
+            strCustomerNumber = new ArrayList<>();
+            strCompletionDate = new ArrayList<>();
 
             for (int i = 0; i < invoices.length(); i++) {
                 JSONObject invoice = invoices.getJSONObject(i);
-                strComments[i] = invoice.get("Ser_Comments").toString();
-                strInvoiceID[i] = invoice.get("Ser_InvoiceId").toString();
-                strPriceTotal[i] = invoice.get("Ser_Balance").toString();
-                strTechNumber[i] = invoice.get("Emp_EmployeeNumber").toString();
-                strCustomerPO[i] = invoice.get("Ser_PurchaseOrder").toString();
-                strCustomerNumber[i] = invoice.get("Cus_CustomerNumber").toString();
-                strCompletionDate[i] = invoice.get("Ser_DateCompleted").toString();
-
                 if (!invoice.get("Ser_Status").toString().equals("0"))
                     continue;
-
-                id.add(strInvoiceID[i]);
+                else {
+                    strComments.add(invoice.get("Ser_Comments").toString());
+                    strInvoiceID.add(invoice.get("Ser_InvoiceId").toString());
+                    strPriceTotal.add(invoice.get("Ser_Balance").toString());
+                    strTechNumber.add(invoice.get("Emp_EmployeeNumber").toString());
+                    strCustomerPO.add(invoice.get("Ser_PurchaseOrder").toString());
+                    strCustomerNumber.add(invoice.get("Cus_CustomerNumber").toString());
+                    strCompletionDate.add(invoice.get("Ser_DateCompleted").toString());
+                }
             }
 
-            ObservableList<String> olID = FXCollections.observableArrayList(id);
+            ObservableList<String> olID = FXCollections.observableArrayList(strInvoiceID);
             comInvoiceID.setItems(olID);
 
 
@@ -99,15 +97,17 @@ public class InvoiceController implements Initializable {
         lineItemsTable.getColumns().clear();
         strID = comInvoiceID.getValue().toString();
 
-        completionDate.setText(strCompletionDate[comInvoiceID.getSelectionModel().getSelectedIndex()]);
+        completionDate.setText(strCompletionDate.get(comInvoiceID.getSelectionModel().getSelectedIndex()));
 
-        customerNumber.setText((strCustomerNumber[comInvoiceID.getSelectionModel().getSelectedIndex()]));
+        customerNumber.setText((strCustomerNumber.get(comInvoiceID.getSelectionModel().getSelectedIndex())));
 
-        customerPO.setText((strCustomerPO[comInvoiceID.getSelectionModel().getSelectedIndex()]));
+        customerPO.setText((strCustomerPO.get(comInvoiceID.getSelectionModel().getSelectedIndex())));
 
-        technicianNumber.setText((strTechNumber[comInvoiceID.getSelectionModel().getSelectedIndex()]));
+        technicianNumber.setText((strTechNumber.get(comInvoiceID.getSelectionModel().getSelectedIndex())));
 
-        txtPriceTotal.setText(strPriceTotal[comInvoiceID.getSelectionModel().getSelectedIndex()]);
+        txtPriceTotal.setText(strPriceTotal.get(comInvoiceID.getSelectionModel().getSelectedIndex()));
+
+        comments.setText(strComments.get(comInvoiceID.getSelectionModel().getSelectedIndex()));
         try {
             ArrayList<LineItems> tlist = new ArrayList<>();
             JSONArray tickets = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
