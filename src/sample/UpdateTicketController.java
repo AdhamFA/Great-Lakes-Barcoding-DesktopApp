@@ -39,7 +39,7 @@ public class UpdateTicketController {
     private ObservableList<LineItems> obline = FXCollections.observableArrayList();
 
     @FXML
-    private TableView table;
+    private TableView table, pullTable;
 
     private TableColumn quantity, itemNumber, comment, price, total;
 
@@ -97,9 +97,9 @@ public class UpdateTicketController {
             strTIM = URLEncoder.encode(txtTIM.getText(), "UTF-8");
         strCMT = URLEncoder.encode(txtCMT.getText(), "UTF-8");
 
-      //  List<LineItems> lineItemsList = table.getItems().;
+        //  List<LineItems> lineItemsList = table.getItems().;
         Iterator<LineItems> iterator = table.getItems().iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             LineItems lineItems = iterator.next();
             String invoiceID = URLEncoder.encode(lineItems.getInvoiceID(), "UTF-8");
             String itemNumber = URLEncoder.encode(lineItems.getItemNumber(), "UTF-8");
@@ -224,6 +224,42 @@ public class UpdateTicketController {
                     }
                 }
             });
+
+
+            ArrayList<LineItems> tlist = new ArrayList<>();
+            JSONArray tickets = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                    "&password=" + Credentials.getPass() + "&request=getLineItem"));
+
+            TableColumn quantity = new TableColumn("Quantity");
+            TableColumn itemNumber = new TableColumn("Item Number");
+            TableColumn comment = new TableColumn("Comment");
+            TableColumn price = new TableColumn("Item Price");
+            TableColumn total = new TableColumn("Item Total");
+
+            pullTable.getColumns().addAll(itemNumber, comment, quantity, price, total);
+
+            for (int i = 0; i < tickets.length(); i++) {
+                JSONObject ticket = tickets.getJSONObject(i);
+                System.out.println(ticket);
+                String strInvI = ticket.get("Ser_InvoiceId").toString();
+                String strItemNum = ticket.get("Inv_ItemNumber").toString();
+                String strQuantity = ticket.get("Quantity").toString();
+                String strComment = ticket.get("Comments").toString();
+
+                JSONArray prices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() + "&request=getProduct&productNum=" + strItemNum));
+                JSONObject priceJSON = prices.getJSONObject(0);
+                String strPrice = priceJSON.get("Inv_SaleCost").toString();
+
+                if (strInvI.equals(strInvID))
+                    tlist.add(new LineItems(strInvI, strItemNum, strQuantity, strComment, strPrice));
+            }
+            ObservableList<LineItems> tobList = FXCollections.observableArrayList(tlist);
+            itemNumber.setCellValueFactory(new PropertyValueFactory<LineItems, String>("itemNumber"));
+            comment.setCellValueFactory(new PropertyValueFactory<LineItems, String>("comment"));
+            quantity.setCellValueFactory(new PropertyValueFactory<LineItems, String>("quantity"));
+            price.setCellValueFactory(new PropertyValueFactory<LineItems, String>("price"));
+            total.setCellValueFactory(new PropertyValueFactory<LineItems, String>("total"));
+            pullTable.setItems(tobList);
         }
     }
 
@@ -239,7 +275,7 @@ public class UpdateTicketController {
             String strQuantity = txtLineQuan.getText();
             String strItemNum = comPartNum.getSelectionModel().getSelectedItem();
             String strItemPrice = strPrice.get(comPartNum.getSelectionModel().getSelectedIndex());
-            obline.add(new LineItems(strInvID ,strItemNum, strQuantity, strComment, strItemPrice));
+            obline.add(new LineItems(strInvID, strItemNum, strQuantity, strComment, strItemPrice));
         }
     }
 

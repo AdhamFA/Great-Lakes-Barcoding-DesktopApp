@@ -22,12 +22,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class InvoiceController implements Initializable {
 
-    private ArrayList<String> strCompletionDate, strCustomerNumber, strCustomerPO, strTechNumber, strPriceTotal, strComments, strInvoiceID;
-    private String strID;
+    private ArrayList<String> strCompletionDate, strCustomerNumber, strCustomerPO, strTechNumber, strPriceTotal, strComments, strInvoiceID, strMileage, strHours;
+    private String strID, strMile, strHour;
+    private ObservableList<LineItems> tobList = FXCollections.observableArrayList();
 
     @FXML
     private Button close, export;
@@ -65,6 +67,8 @@ public class InvoiceController implements Initializable {
             strCustomerPO = new ArrayList<>();
             strCustomerNumber = new ArrayList<>();
             strCompletionDate = new ArrayList<>();
+            strMileage = new ArrayList<>();
+            strHours = new ArrayList<>();
 
             for (int i = 0; i < invoices.length(); i++) {
                 JSONObject invoice = invoices.getJSONObject(i);
@@ -78,6 +82,8 @@ public class InvoiceController implements Initializable {
                     strCustomerPO.add(invoice.get("Ser_PurchaseOrder").toString());
                     strCustomerNumber.add(invoice.get("Cus_CustomerNumber").toString());
                     strCompletionDate.add(invoice.get("Ser_DateCompleted").toString());
+                    strMileage.add(invoice.get("Ser_TechMiles").toString());
+                    strHours.add(invoice.get("Ser_RepairTime").toString());
                 }
             }
 
@@ -91,11 +97,26 @@ public class InvoiceController implements Initializable {
     }
 
     @FXML
-    private void comboAction(ActionEvent event) {
-        /*completionDate, customerNumber, customerPO, technicianNumber,
-            txtPriceTotal*/
+    private void comboAction(ActionEvent event) throws IOException {
         lineItemsTable.getColumns().clear();
+        tobList.clear();
         strID = comInvoiceID.getValue().toString();
+        strHour = strHours.get(comInvoiceID.getSelectionModel().getSelectedIndex());
+        strMile = strMileage.get(comInvoiceID.getSelectionModel().getSelectedIndex());
+
+        TableColumn quantity = new TableColumn("Quantity");
+        TableColumn itemNumber = new TableColumn("Item Number");
+        TableColumn comment = new TableColumn("Comment");
+        TableColumn price = new TableColumn("Item Price");
+        TableColumn total = new TableColumn("Item Total");
+
+        lineItemsTable.getColumns().addAll(itemNumber, comment, quantity, price, total);
+
+        itemNumber.setCellValueFactory(new PropertyValueFactory<LineItems, String>("itemNumber"));
+        comment.setCellValueFactory(new PropertyValueFactory<LineItems, String>("comment"));
+        quantity.setCellValueFactory(new PropertyValueFactory<LineItems, String>("quantity"));
+        price.setCellValueFactory(new PropertyValueFactory<LineItems, String>("price"));
+        total.setCellValueFactory(new PropertyValueFactory<LineItems, String>("total"));
 
         completionDate.setText(strCompletionDate.get(comInvoiceID.getSelectionModel().getSelectedIndex()));
 
@@ -108,45 +129,39 @@ public class InvoiceController implements Initializable {
         txtPriceTotal.setText(strPriceTotal.get(comInvoiceID.getSelectionModel().getSelectedIndex()));
 
         comments.setText(strComments.get(comInvoiceID.getSelectionModel().getSelectedIndex()));
-        try {
-            ArrayList<LineItems> tlist = new ArrayList<>();
-            JSONArray tickets = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
-                    "&password=" + Credentials.getPass() + "&request=getLineItem&invoiceId=" + strID));
 
-            TableColumn quantity = new TableColumn("Quantity");
-            TableColumn itemNumber = new TableColumn("Item Number");
-            TableColumn comment = new TableColumn("Comment");
-            TableColumn price = new TableColumn("Item Price");
-            TableColumn total = new TableColumn("Item Total");
+        JSONArray tickets = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() +
+                "&password=" + Credentials.getPass() + "&request=getLineItem"));
 
-            lineItemsTable.getColumns().addAll(itemNumber, comment, quantity, price, total);
+        for (int i = 0; i < tickets.length(); i++) {
+            JSONObject ticket = tickets.getJSONObject(i);
+            System.out.println(ticket);
+            String strInvId = ticket.get("Ser_InvoiceId").toString();
+            String strItemNum = ticket.get("Inv_ItemNumber").toString();
+            String strQuantity = ticket.get("Quantity").toString();
+            String strComment = ticket.get("Comments").toString();
 
-            for (int i = 0; i < tickets.length(); i++) {
-                JSONObject ticket = tickets.getJSONObject(i);
-                System.out.println(ticket);
-                String strInvId = ticket.get("Ser_InvoiceId").toString();
-                String strItemNum = ticket.get("Inv_ItemNumber").toString();
-                String strQuantity = ticket.get("Quantity").toString();
-                String strComment = ticket.get("Comments").toString();
+            JSONArray prices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() + "&request=getProduct&productNum=" + strItemNum));
+            JSONObject priceJSON = prices.getJSONObject(0);
+            String strPrice = priceJSON.get("Inv_SaleCost").toString();
 
-                JSONArray prices = new JSONArray(readJsonFromUrl("https://dev.cis294.hfcc.edu/api.php?username=" + Credentials.getUser() + "&password=" + Credentials.getPass() + "&request=getProduct&productNum=" + strItemNum));
-                JSONObject priceJSON = prices.getJSONObject(0);
-                String strPrice = priceJSON.get("Inv_SaleCost").toString();
-
-                tlist.add(new LineItems(strInvId, strItemNum, strQuantity, strComment, strPrice));
-            }
-            ObservableList<LineItems> tobList = FXCollections.observableArrayList(tlist);
-            itemNumber.setCellValueFactory(new PropertyValueFactory<LineItems, String>("itemNumber"));
-            comment.setCellValueFactory(new PropertyValueFactory<LineItems, String>("comment"));
-            quantity.setCellValueFactory(new PropertyValueFactory<LineItems, String>("quantity"));
-            price.setCellValueFactory(new PropertyValueFactory<LineItems, String>("price"));
-            total.setCellValueFactory(new PropertyValueFactory<LineItems, String>("total"));
-            lineItemsTable.setItems(tobList);
+            if (strInvId.equals(strID))
+                tobList.add(new LineItems(strInvId, strItemNum, strQuantity, strComment, strPrice));
         }
-        catch (IOException e)
-        {
-            System.out.println(e);
+
+        tobList.add(new LineItems(strID, "", strMile, "Mileage", "44.5"));
+        tobList.add(new LineItems(strID, "", strHour, "Hours", "50"));
+        lineItemsTable.setItems(tobList);
+
+
+        double totalPrice = 0;
+        Iterator<LineItems> iterator = tobList.iterator();
+        while (iterator.hasNext()){
+            LineItems lineItems = iterator.next();
+            double itemTotal = Double.parseDouble(lineItems.getTotal());
+            totalPrice += itemTotal;
         }
+        txtPriceTotal.setText(Double.toString(totalPrice));
     }
 
 
