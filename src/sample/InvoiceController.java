@@ -32,7 +32,7 @@ public class InvoiceController implements Initializable {
     private ObservableList<LineItems> tobList = FXCollections.observableArrayList();
 
     @FXML
-    private Button close, export;
+    private Button close;
     @FXML
     private TextField completionDate, customerNumber, customerPO, technicianNumber,
             txtPriceTotal;

@@ -14,7 +14,6 @@
    <right>
       <VBox spacing="2.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Print" />
             <Region VBox.vgrow="ALWAYS" />
             <Button fx:id="close" mnemonicParsing="false" onAction="#closeScene" text="Close" />
          </children>

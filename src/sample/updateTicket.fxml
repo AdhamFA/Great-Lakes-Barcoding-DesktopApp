@@ -37,7 +37,7 @@
                <children>
                   <Label text="Service Ticket Reason:" wrapText="true" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextArea fx:id="txtReason" editable="false" />
+                  <TextArea fx:id="txtReason" editable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="465.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
@@ -81,7 +81,6 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="200.0" spacing="4.0">
                <children>
-                  <Region HBox.hgrow="ALWAYS" />
                   <Label text="Item Comments:" />
                   <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
                   <TextField fx:id="txtLineComment" />
@@ -89,15 +88,9 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="142.0" spacing="4.0">
                <children>
-                  <Region HBox.hgrow="ALWAYS" />
                   <Label text="Item Number:" />
                   <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
                   <ComboBox fx:id="comPartNum" onAction="#comboAction" prefWidth="150.0" />
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="175.0" spacing="4.0">
-               <children>
-                  <Region HBox.hgrow="ALWAYS" />
                   <Label text="Item Quantity:" />
                   <Region layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
                   <TextField fx:id="txtLineQuan" />
@@ -134,7 +127,7 @@
                <children>
                   <Label text="Technician Comments:" wrapText="true" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextArea fx:id="txtCMT" />
+                  <TextArea fx:id="txtCMT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="465.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>

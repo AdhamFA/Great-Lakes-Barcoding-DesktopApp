@@ -35,58 +35,58 @@
                <children>
                   <Label text="First Name:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtFName" />
+                  <TextField fx:id="txtFName" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox spacing="6.0">
                <children>
                   <Label text="Last Name:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtLName" />
+                  <TextField fx:id="txtLName" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox spacing="6.0">
                <children>
                   <Label text="Street Address:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtStreet" />
+                  <TextField fx:id="txtStreet" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0">
                <children>
                   <Label text="City:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtCity" />
+                  <TextField fx:id="txtCity" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="110.0" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="State:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <ComboBox fx:id="comState" prefWidth="150.0" />
+                  <ComboBox fx:id="comState" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Zip Code:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtZIP" />
+                  <TextField fx:id="txtZIP" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="224.0" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Phone Number:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtNUM1" prefHeight="25.0" prefWidth="44.0" />
-                  <TextField fx:id="txtNUM2" prefHeight="25.0" prefWidth="40.0" />
-                  <TextField fx:id="txtNUM3" prefHeight="25.0" prefWidth="65.0" />
+                  <TextField fx:id="txtNUM1" prefHeight="25.0" prefWidth="50.0" />
+                  <TextField fx:id="txtNUM2" prefHeight="25.0" prefWidth="50.0" />
+                  <TextField fx:id="txtNUM3" prefHeight="25.0" prefWidth="75.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="158.0" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Social Security Number:          " />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtSSN" />
+                  <TextField fx:id="txtSSN" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="269.0" maxWidth="1.7976931348623157E308">
@@ -107,28 +107,28 @@
                <children>
                   <Label text="Salary:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtSalary" />
+                  <TextField fx:id="txtSalary" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="269.0" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Job Title:  " />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtTitle" />
+                  <TextField fx:id="txtTitle" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="417.0" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="User Name: " />
                   <Region HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="txtUserName" />
+                  <TextField fx:id="txtUserName" prefWidth="175.0" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="454.0" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Password:" />
                   <Region HBox.hgrow="ALWAYS" />
-                  <PasswordField fx:id="txtPassword" />
+                  <PasswordField fx:id="txtPassword" prefWidth="175.0" />
                </children>
             </HBox>
          </children>
