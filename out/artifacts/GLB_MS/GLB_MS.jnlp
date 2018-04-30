@@ -8,7 +8,7 @@
     <update check="background"/>
     <resources>
         <j2se version="10+" href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="GLB_MS.jar" size="211798" download="eager"/>
+        <jar href="GLB_MS.jar" size="212047" download="eager"/>
         <jar href="IText\itextpdf-5.5.13.jar" size="2320581" download="eager"/>
         <jar href="JSon\json-20180130.jar" size="62116" download="eager"/>
     </resources>
